@@ -1,0 +1,25 @@
+{
+  "name": "eat-it",
+  "version": "1.0.0",
+  "description": "🍽뭐먹을끼니",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galPang-JilPang/Eat-It.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/galPang-JilPang/Eat-It/issues"
+  },
+  "homepage": "https://github.com/galPang-JilPang/Eat-It#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
