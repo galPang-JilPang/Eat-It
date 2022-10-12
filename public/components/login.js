@@ -100,6 +100,7 @@ const submit = async e => {
     console.error(err);
   }
 };
+
 // console.log(
 //   db
 //     .collection('users')
@@ -110,5 +111,6 @@ const submit = async e => {
 // $root.addEventListener('click', toggleNav);
 // $root.addEventListener('input', validate);
 // $root.addEventListener('submit', submit);
+
 
 export default Login;

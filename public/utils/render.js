@@ -1,3 +1,4 @@
+
 import { Home, Login, Voting, Add } from '../components/index.js';
 
 const $root = document.getElementById('root');
