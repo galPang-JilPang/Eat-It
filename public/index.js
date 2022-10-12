@@ -1,9 +1,10 @@
-import { Home, Login } from './components/index.js';
+import { Home, Login, Add } from './components/index.js';
 
 const $root = document.getElementById('root');
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
+  { path: '/add', component: Add },
 ];
 
 const render = async path => {
