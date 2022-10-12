@@ -100,15 +100,17 @@ const submit = async e => {
     console.error(err);
   }
 };
-console.log(
-  db
-    .collection('users')
-    .get()
-    .then(users => users.forEach(u => console.log(u.data())))
-);
 
-$root.addEventListener('click', toggleNav);
-$root.addEventListener('input', validate);
-$root.addEventListener('submit', submit);
+// console.log(
+//   db
+//     .collection('users')
+//     .get()
+//     .then(users => users.forEach(u => console.log(u.data())))
+// );
+
+// $root.addEventListener('click', toggleNav);
+// $root.addEventListener('input', validate);
+// $root.addEventListener('submit', submit);
+
 
 export default Login;
