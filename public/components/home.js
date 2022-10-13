@@ -1,6 +1,6 @@
 import createElement from '../utils/createElement.js';
-import route from './../utils/route.js';
-import render from './../utils/render.js';
+import route from '../utils/route.js';
+import render from '../utils/render.js';
 
 let HomeData = [
   {
@@ -56,8 +56,8 @@ let HomeData = [
 //   return Math.max(...HomeData.map(store => store.id), 0) + 1;
 // };
 
-const Home = () => {
-  return createElement(`
+const Home = () =>
+  createElement(`
   <div>은지님의 투표 목록</div>
   <a href="/home" class="add-vote">+</a>
   <div class="vote-list-container">
@@ -77,7 +77,6 @@ const Home = () => {
 `
   ).join('')}
   </div>`);
-};
 
 const setHomeData = newHomeData => {
   HomeData = newHomeData;

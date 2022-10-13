@@ -1,5 +1,6 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
+import route from '../utils/route.js';
 
 const Add = () =>
   createElement(`
@@ -24,11 +25,12 @@ $root.addEventListener('submit', async e => {
 
   let id = 0;
 
-  const doc = await db.collection('사용자이메일').doc('투표목록').collection('투표목록').get();
+  const loginedEmail = 'test1@test.com';
+  const doc = await db.collection(loginedEmail).doc('voteList').collection('voteItems').get();
 
   id = doc.docs.length + 1;
 
-  db.collection('사용자이메일').doc('투표목록').collection('투표목록').doc(`${id}`).set(
+  db.collection(loginedEmail).doc('voteList').collection('voteItems').doc(`${id}`).set(
     {
       title: voteTitle,
       deadline,
