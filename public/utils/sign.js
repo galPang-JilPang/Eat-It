@@ -38,9 +38,11 @@ let currentPage = 'signin';
 let currentState = signinState;
 
 const toggleNav = e => {
-  if (!e.target.matches('nav > ul > li')) return;
+  e.preventDefault();
 
-  const isSigninPage = e.target.classList.contains('signin');
+  if (!e.target.matches('nav > ul > li > a')) return;
+
+  const isSigninPage = e.target.closest('li').classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';
   currentState = isSigninPage ? signinState : signupState;
 
@@ -54,6 +56,8 @@ const activeButton = () => {
 };
 
 const validate = e => {
+  if (!e.target.matches('.signin-form > input') || !e.target.matches('.signup-form > input')) return;
+
   const { name, value } = e.target;
   currentState[name].value = value.trim();
 
@@ -93,7 +97,7 @@ const submit = async e => {
 
     if (currentPage === 'signup') {
       const res = await auth.createUserWithEmailAndPassword(signupState.userid.value, signupState.password.value);
-      db.collection(`${signupState.userid.value}`).doc('voteList').set({});
+      db.collection('users').doc(`${signupState.userid.value}`).set({});
       render(route(e));
     }
   } catch (err) {
