@@ -1,4 +1,4 @@
-import { auth } from './firebase.js';
+import { auth, db } from './firebase.js';
 import route from './route.js';
 import render from '../index.js';
 
@@ -92,6 +92,7 @@ const submit = async e => {
 
     if (currentPage === 'signup') {
       const res = await auth.createUserWithEmailAndPassword(signupState.userid.value, signupState.password.value);
+      db.collection(`${signupState.userid.value}`).doc('voteList').set({});
       render(route(e));
     }
   } catch (err) {
