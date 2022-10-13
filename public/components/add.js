@@ -5,15 +5,20 @@ import route from '../utils/route.js';
 
 const Add = () =>
   createElement(`
-  <form>
-  <h1>투표 만들기</h1>
-  <a href="/" class="close">X</a>
-  <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요"></input>
-  <input type="date" class="deadline"></input>
-  <label><input type="radio" id="single-vote" class="vote-type" name="vote-type">단일투표</label>
-  <label><input type="radio" id="multi-vote" class="vote-type" name="vote-type">다중투표</label>
-  <button type="submit">추가하기</button>
-  </form>`);
+  <div id="add">
+    <form class="add-form">
+    <h1 class="add-title">투표 만들기 <a href="/" class="close">X</a></h1>
+    <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요"></input>
+    <input type="date" class="deadline"></input>
+    <div class="class-toggle">
+    <input type="radio" id="single-vote" class="vote-type" name="vote-type" hidden/>
+    <label for="single-vote" >단일투표</label>
+    <input type="radio" id="multi-vote" class="vote-type" name="vote-type" hidden/>
+    <label for="multi-vote">다중투표</label>
+    </div>
+    <button class="btn-add" type="submit">추가하기</button>
+    </form>
+  </div>`);
 
 const $root = document.getElementById('root');
 
@@ -29,7 +34,7 @@ $root.addEventListener('submit', async e => {
   const loginedEmail = 'test1@test.com';
   const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
 
-  id = doc.docs.length + 1;
+  id = Math.max(...doc.docs.map(element => +element.id)) + 1;
 
   db.collection('users').doc(loginedEmail).collection('voteList').doc(`${id}`).set(
     {
