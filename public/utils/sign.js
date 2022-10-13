@@ -45,6 +45,7 @@ const toggleNav = e => {
   currentState = isSigninPage ? signinState : signupState;
 
   [...document.querySelectorAll('nav > ul > li')].forEach($li => $li.classList.toggle('active'));
+  render(route(e));
 };
 
 const activeButton = () => {

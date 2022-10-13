@@ -1,13 +1,13 @@
-import { Home, Login, Voting, Add, Form, Welcome } from '../components/index.js';
+import { Home, Login, Voting, Add, Register, Welcome } from '../components/index.js';
 
 const $root = document.getElementById('root');
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
+  { path: '/register', component: Register },
   { path: '/home', component: Home },
   { path: '/voting', component: Voting },
   { path: '/add', component: Add },
-  { path: '/form', component: Form },
   { path: '/welcome', component: Welcome },
 ];
 
