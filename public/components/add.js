@@ -27,11 +27,11 @@ $root.addEventListener('submit', async e => {
   let id = 0;
 
   const loginedEmail = 'test1@test.com';
-  const doc = await db.collection('users').doc('voteList').collection(loginedEmail).get();
+  const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
 
   id = doc.docs.length + 1;
 
-  db.collection('users').doc('voteList').collection(loginedEmail).doc(`${id}`).set(
+  db.collection('users').doc(loginedEmail).collection('voteList').doc(`${id}`).set(
     {
       id,
       title: voteTitle,
