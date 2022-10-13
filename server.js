@@ -19,13 +19,14 @@ app.get('/api/:page', (req, res) => {
   res.sendFile(path.join(__dirname, `public/database/${page}.json`));
 });
 
-// 토큰이 필요한 페이지에 접근했을 때
+/* 토큰이 필요한 페이지에 접근했을 때 */
 const auth = (req, res) => {
   const accessToken = req.cookies;
 
   jwt.verify(accessToken, SECRET_KEY, (err, decoded) => {
     if (err) {
       console.error(err);
+      return;
     }
     console.log(decoded);
   });
@@ -36,6 +37,7 @@ app.post('/api/signin', (req, res) => {
 
   const user = users.findUser(userid, password);
   if (!user) {
+    res.status(400).send('존재하지 않는 사용자입니다');
     console.error('존재하지 않는 사용자입니다');
     return;
   }
@@ -53,6 +55,7 @@ app.post('/api/signup', (req, res) => {
 
   const user = users.findUser(userid, password);
   if (user) {
+    res.status(400).send('이미 존재하는 사용자입니다');
     console.error('이미 존재하는 사용자입니다');
     return;
   }
