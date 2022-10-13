@@ -1,4 +1,5 @@
 import { auth } from './firebase.js';
+import route from './route.js';
 import render from '../index.js';
 
 // signin, signup에서 공통으로 사용하는 로직
@@ -57,7 +58,7 @@ const validate = e => {
 
   // e.target.closest('.error-msg').textContent = !signinState[name].valid ? signinState[name].error : '';
 
-  activeButton();
+  // activeButton();
 };
 
 /* 로그인해야 접근할 수 있는 페이지에서 사용할 request */
@@ -78,27 +79,20 @@ const authRequest = async () => {
   });
 };
 
-const route = path => {
-  if (window.location.pathname === path) return;
-
-  window.history.pushState(null, null, path);
-  render(path);
-};
-
 const submit = async e => {
-  if (!e.target.matches('.signin-form') && !e.target.matches('.signup-form')) return;
+  if (!e.target.matches('.signin-btn') && !e.target.matches('.signup-btn')) return;
 
   e.preventDefault();
 
   try {
     if (currentPage === 'signin') {
       const res = await auth.signInWithEmailAndPassword(signinState.userid.value, signinState.password.value);
-      route('/');
+      render(route(e));
     }
 
     if (currentPage === 'signup') {
       const res = await auth.createUserWithEmailAndPassword(signupState.userid.value, signupState.password.value);
-      route('/welcome');
+      render(route(e));
     }
   } catch (err) {
     console.error(err);

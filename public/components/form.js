@@ -19,6 +19,6 @@ const Form = () =>
 
 $root.addEventListener('click', toggleNav);
 $root.addEventListener('input', validate);
-$root.addEventListener('submit', submit);
+$root.addEventListener('click', submit);
 
 export default Form;

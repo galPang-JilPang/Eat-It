@@ -4,7 +4,7 @@ const Login = () => `
     <input type="email" name="userid" autocomplete="off" />
     <label for="password">비밀번호</label>
     <input type="password" name="password" autocomplete="off" />
-    <button class="signin">로그인</button>
+    <a href="/" class="signin-btn">로그인</a>
     <div class="error-msg"></div>
   </form>
 `;
