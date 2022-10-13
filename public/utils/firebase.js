@@ -25,7 +25,3 @@ auth.onAuthStateChanged(user => {
     console.log('not login');
   }
 });
-
-// db.collection('users')
-//   .get()
-//   .then(users => users.forEach(u => console.log(u.data())));
