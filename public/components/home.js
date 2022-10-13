@@ -2,13 +2,16 @@ import createElement from '../utils/createElement.js';
 import route from '../utils/route.js';
 import render from '../utils/render.js';
 import { db } from '../utils/firebase.js';
-
+import Nav from './nav.js';
 // const getId = () => {
 //   return Math.max(...HomeData.map(store => store.id), 0) + 1;
 // };
 
 const Home = async () => {
-  const homeBody = createElement('<div id="home"></div>');
+  const homeBody = createElement(`
+    ${Nav()}
+    <div id="home"></div>
+  `);
 
   const getVoteList = async () => {
     const loginedEmail = 'test1@test.com';
@@ -26,10 +29,8 @@ const Home = async () => {
   };
 
   const fetchUserVoteList = voteItems => `
-
     <div class="member-title">은지님의 투표 목록
      <a href="/add" class="add-vote"><img src="../src/plus.png"/></a>
-          
    </div>
 
     <div class="vote-list-container">
@@ -58,7 +59,7 @@ const Home = async () => {
   const voteList = fetchUserVoteList(voteItems);
   const voteListElement = await createElement(voteList);
 
-  homeBody.firstChild.append(voteListElement);
+  homeBody.getElementById('home').append(voteListElement);
   return homeBody;
 };
 

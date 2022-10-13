@@ -38,7 +38,7 @@ let currentPage = 'signin';
 let currentState = signinState;
 
 const toggleNav = e => {
-  if (!e.target.matches('nav > ul > li')) return;
+  if (!e.target.matches('nav > ul > li') || e.target.matches('.user')) return;
 
   const isSigninPage = e.target.classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';

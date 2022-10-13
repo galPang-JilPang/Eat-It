@@ -2,17 +2,19 @@ import render from '../index.js';
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import route from '../utils/route.js';
+import Nav from './nav.js';
 
 const Add = () =>
-  createElement(`
+  createElement(`    
+  ${Nav()}
   <form>
-  <h1>투표 만들기</h1>
-  <a href="/" class="close">X</a>
-  <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요"></input>
-  <input type="date" class="deadline"></input>
-  <label><input type="radio" id="single-vote" class="vote-type" name="vote-type">단일투표</label>
-  <label><input type="radio" id="multi-vote" class="vote-type" name="vote-type">다중투표</label>
-  <button type="submit">추가하기</button>
+    <h1>투표 만들기</h1>
+    <a href="/" class="close">X</a>
+    <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요"></input>
+    <input type="date" class="deadline"></input>
+    <label><input type="radio" id="single-vote" class="vote-type" name="vote-type">단일투표</label>
+    <label><input type="radio" id="multi-vote" class="vote-type" name="vote-type">다중투표</label>
+    <button type="submit">추가하기</button>
   </form>`);
 
 const $root = document.getElementById('root');
