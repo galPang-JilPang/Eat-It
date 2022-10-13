@@ -1,5 +1,4 @@
-
-import { Home, Login, Voting, Add } from '../components/index.js';
+import { Home, Login, Voting, Add, Form, Welcome } from '../components/index.js';
 
 const $root = document.getElementById('root');
 const routes = [
@@ -8,6 +7,8 @@ const routes = [
   { path: '/home', component: Home },
   { path: '/voting', component: Voting },
   { path: '/add', component: Add },
+  { path: '/form', component: Form },
+  { path: '/welcome', component: Welcome },
 ];
 
 const render = async path => {

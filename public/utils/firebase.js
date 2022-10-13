@@ -14,8 +14,10 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 export const auth = firebase.auth();
 export const db = firebase.firestore();
+
 auth.onAuthStateChanged(user => {
   if (user) {
     console.log(' login');

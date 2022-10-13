@@ -8,3 +8,5 @@ window.addEventListener('popstate', () => {
 window.addEventListener('DOMContentLoaded', () => {
   render();
 });
+
+export default render;

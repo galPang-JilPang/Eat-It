@@ -1,8 +1,8 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 
-const Add = () => {
-  return createElement(`
+const Add = () =>
+  createElement(`
   <form>
   <h1>투표 만들기</h1>
   <a href="/" class="close">X</a>
@@ -12,7 +12,6 @@ const Add = () => {
   <label><input type="radio" id="multi-vote" class="vote-type" name="vote-type">다중투표</label>
   <button type="submit">추가하기</button>
   </form>`);
-};
 
 const $root = document.getElementById('root');
 
@@ -27,13 +26,13 @@ $root.addEventListener('submit', async e => {
 
   const doc = await db.collection('사용자이메일').doc('투표목록').collection('투표목록').get();
 
-  id = doc['docs'].length + 1;
+  id = doc.docs.length + 1;
 
   db.collection('사용자이메일').doc('투표목록').collection('투표목록').doc(`${id}`).set(
     {
       title: voteTitle,
-      deadline: deadline,
-      voteType: voteType,
+      deadline,
+      voteType,
     },
     { merge: true }
 
