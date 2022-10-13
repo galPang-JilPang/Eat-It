@@ -12,12 +12,14 @@ const Register = () =>
     <form id="signup" class="signup-form">
       <label for="userid">이메일</label>
       <input type="email" name="userid" autocomplete="off" />
+      <div class="error-userid"></div>
       <label for="password">비밀번호</label>
       <input type="password" name="password" autocomplete="off" />
-      <label for="password-confirm">비밀번호 확인</label>
-      <input type="password" name="password-confirm" autocomplete="off" />
+      <div class="error-password"></div>
+      <label for="confirm-password">비밀번호 확인</label>
+      <input type="password" name="confirm-password" autocomplete="off" />
+      <div class="error-confirm-password"></div>
       <a href="/welcome" class="signup-btn">회원가입</a>
-      <div class="error-msg"></div>
     </form>
 `);
 

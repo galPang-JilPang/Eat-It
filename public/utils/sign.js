@@ -55,16 +55,16 @@ const activeButton = () => {
   $form.querySelector('button').disabled = !signinState.valid;
 };
 
-const validate = e => {
-  if (!e.target.matches('.signin-form > input') || !e.target.matches('.signup-form > input')) return;
+const validate = _.debounce(e => {
+  if (!e.target.matches(`.${currentPage}-form > input`)) return;
 
   const { name, value } = e.target;
   currentState[name].value = value.trim();
 
-  // e.target.closest('.error-msg').textContent = !signinState[name].valid ? signinState[name].error : '';
+  document.querySelector(`.error-${name}`).textContent = !currentState[name].valid ? currentState[name].error : '';
 
   // activeButton();
-};
+}, 300);
 
 /* 로그인해야 접근할 수 있는 페이지에서 사용할 request */
 const authRequest = async () => {
