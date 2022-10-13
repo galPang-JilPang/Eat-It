@@ -5,11 +5,13 @@
   --white-color: #fff;
   --border-line: #595959;
 
+  --grey-color: #d1d1d1;
   --page-title-height: 2rem;
 
   --item-title: 1.5rem;
   --item-subtitle: 1.2rem;
   --item-description: 0.8rem;
+  --item-subdescription: 0.6rem;
   --card-padding: 1rem;
   --round-padding: 0.5rem;
   --round-diameter: 1rem;
@@ -31,6 +33,7 @@ ul,
 li {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 a {
   text-decoration: none;
@@ -130,18 +133,72 @@ a {
 /*   home css end*/
 
 /*   login css start*/
-#login {
-  max-width: 500px;
+#login,
+#register {
+  background-color: var(--white-color);
+  max-width: 400px;
+  padding: 3rem;
+  width: 100%;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
 }
-
+.signin-form,
+.signup-form {
+  max-width: 90%;
+  padding-top: 1rem;
+  margin: auto;
+}
+.signin-form *,
+.signup-form * {
+  display: block;
+  width: 100%;
+}
+.signin-form label,
+.signup-form label {
+  font-size: var(--item-subdescription);
+  padding-bottom: var(--gap);
+  padding-top: var(--gap);
+}
+.signin-form input,
+.signup-form input {
+  height: 2rem;
+  border-radius: 10px;
+  border: 1px solid var(--grey-color);
+}
+.signin-btn,
+.signup-btn {
+  text-align: center;
+  background-color: var(--grey-color);
+  padding: var(--gap);
+  border-radius: 50px;
+  margin-top: 1rem;
+  box-sizing: border-box;
+  color: var(--white-color);
+}
 .class-toggle {
   display: flex;
 }
+.class-toggle li.active {
+  background-color: var(--primary-color);
+}
 .class-toggle li {
   width: 50%;
+  text-align: center;
+  background-color: var(--grey-color);
+  padding: var(--gap);
+  border-radius: 10px;
+  font-size: var(--item-description);
 }
+.class-toggle li:first-child {
+  border-radius: 10px 0px 0px 10px;
+}
+.class-toggle li:last-child {
+  border-radius: 0px 10px 10px 0px;
+}
+.class-toggle li a {
+  color: var(--white-color);
+}
+
 /*   login css end*/

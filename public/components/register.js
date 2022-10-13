@@ -3,12 +3,12 @@ import { toggleNav, validate, submit } from '../utils/sign.js';
 
 const Register = () =>
   createElement(`
-    <nav>
-      <ul>
-        <li class="signin active"><a href="/login">로그인</a></li>
-        <li class="signup"><a href="/register">회원가입</a></li>
+  <div id="register">
+      <ul class="class-toggle">
+        <li class="signin"><a href="/login">로그인</a></li>
+        <li class="signup active"><a href="/register">회원가입</a></li>
       </ul>
-    </nav>
+
     <form id="signup" class="signup-form">
       <label for="userid">이메일</label>
       <input type="email" name="userid" autocomplete="off" />
@@ -19,6 +19,7 @@ const Register = () =>
       <a href="/welcome" class="signup-btn">회원가입</a>
       <div class="error-msg"></div>
     </form>
+    </div>
 `);
 
 window.addEventListener('click', toggleNav);
