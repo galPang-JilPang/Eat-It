@@ -12,7 +12,7 @@ const Add = () =>
     <input type="date" class="deadline"></input>
     <div class="class-toggle">
     <input type="radio" id="single-vote" class="vote-type" name="vote-type" hidden/>
-    <label for="single-vote" >단일투표</label>
+    <label for="single-vote">단일투표</label>
     <input type="radio" id="multi-vote" class="vote-type" name="vote-type" hidden/>
     <label for="multi-vote">다중투표</label>
     </div>
@@ -27,7 +27,8 @@ $root.addEventListener('submit', async e => {
 
   const voteTitle = $root.querySelector('.vote-title').value;
   const deadline = $root.querySelector('.deadline').value;
-  const voteType = [...$root.querySelectorAll('.vote-type')].find(type => type.checked).closest('label').outerText;
+  const voteId = [...$root.querySelectorAll('.vote-type')].find(type => type.checked).id;
+  const voteType = document.querySelector(`label[for=${voteId}]`).textContent;
 
   let id = 0;
 
