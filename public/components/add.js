@@ -1,3 +1,4 @@
+import render from '../index.js';
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import route from '../utils/route.js';
@@ -32,6 +33,7 @@ $root.addEventListener('submit', async e => {
 
   db.collection(loginedEmail).doc('voteList').collection('voteItems').doc(`${id}`).set(
     {
+      id,
       title: voteTitle,
       deadline,
       voteType,
@@ -48,7 +50,7 @@ $root.addEventListener('submit', async e => {
 $root.addEventListener('click', e => {
   if (!e.target.matches('.close')) return;
 
-  route(e);
+  render(route(e));
 });
 
 export default Add;
