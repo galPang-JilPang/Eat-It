@@ -1,10 +1,12 @@
-import { Home, Login, Form } from './components/index.js';
+import { Home, Login, Form, Welcome } from './components/index.js';
 
 const $root = document.getElementById('root');
+
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
   { path: '/form', component: Form },
+  { path: '/welcome', component: Welcome },
 ];
 
 const render = async path => {
@@ -26,3 +28,5 @@ window.addEventListener('popstate', () => {
 window.addEventListener('DOMContentLoaded', () => {
   render();
 });
+
+export default render;
