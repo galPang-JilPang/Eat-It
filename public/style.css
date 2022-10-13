@@ -15,7 +15,7 @@
   --round-diameter: 1rem;
 
   --border-radius: 20px;
-  --gap: 10px;
+  --gap: 0.5rem;
 
   --content-padding-top: 10rem;
   --content-padding-bottom: 2rem;
@@ -24,24 +24,28 @@
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  background-color: var(--secondary-color);
+}
+ul,
+li {
+  padding: 0;
+  margin: 0;
 }
 a {
   text-decoration: none;
-}
-#root {
-  background-color: var(--secondary-color);
 }
 
 /*   home css start*/
 #home {
   max-width: 980px;
-
   margin: auto;
 }
 .member-title {
   padding-top: var(--content-padding-top);
   padding-bottom: var(--content-padding-bottom);
   font-size: var(--page-title-height);
+  line-height: var(--page-title-height);
   display: flex;
 }
 .delete-vote {
@@ -49,18 +53,11 @@ a {
   background: none;
   border: none;
 }
-.add-vote {
-  display: block;
-  width: var(--round-diameter);
-  height: var(--round-diameter);
-  background: var(--primary-color);
-  padding: var(--round-padding);
-  border-radius: 100%;
-  color: var(--white-color);
-  text-align: center;
-  font-size: 1rem;
-  transform: translate3d((-50%, 0, 0));
+.add-vote img {
+  width: var(--page-title-height);
+  padding-left: var(--gap);
 }
+
 .vote-list-container {
   display: flex;
   flex-wrap: wrap;
@@ -68,9 +65,15 @@ a {
 }
 .vote-list-container .card {
   box-sizing: border-box;
+  width: calc(33.3% - 0.5rem);
   padding: var(--card-padding);
   background-color: var(--white-color);
   border-radius: var(--border-radius);
+}
+@media (max-width: 500px) {
+  .vote-list-container .card {
+    width: 50%;
+  }
 }
 .vote-name {
   font-size: var(--item-title);
@@ -110,7 +113,7 @@ a {
   padding-bottom: 1rem;
   justify-content: space-between;
 }
-.is-votiong {
+.is-voting {
   font-size: var(--item-subtitle);
   color: var(--tertiary-color);
 }
@@ -125,3 +128,20 @@ a {
   right: 0;
 }
 /*   home css end*/
+
+/*   login css start*/
+#login {
+  max-width: 500px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.class-toggle {
+  display: flex;
+}
+.class-toggle li {
+  width: 50%;
+}
+/*   login css end*/
