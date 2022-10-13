@@ -12,7 +12,7 @@ const Home = async () => {
 
   const getVoteList = async () => {
     const loginedEmail = 'test1@test.com';
-    const doc = await db.collection(loginedEmail).doc('voteList').collection('voteItems').get();
+    const doc = await db.collection('users').doc('voteList').collection(loginedEmail).get();
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
     return voteItems;
