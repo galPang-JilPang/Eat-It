@@ -38,9 +38,11 @@ let currentPage = 'signin';
 let currentState = signinState;
 
 const toggleNav = e => {
-  if (!e.target.matches('nav > ul > li')) return;
+  e.preventDefault();
 
-  const isSigninPage = e.target.classList.contains('signin');
+  if (!e.target.matches(`.${currentPage} > a`)) return;
+
+  const isSigninPage = e.target.closest('li').classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';
   currentState = isSigninPage ? signinState : signupState;
 
@@ -53,14 +55,16 @@ const activeButton = () => {
   $form.querySelector('button').disabled = !signinState.valid;
 };
 
-const validate = e => {
+const validate = _.debounce(e => {
+  if (!e.target.matches(`.${currentPage}-form > input`)) return;
+
   const { name, value } = e.target;
   currentState[name].value = value.trim();
 
-  // e.target.closest('.error-msg').textContent = !signinState[name].valid ? signinState[name].error : '';
+  document.querySelector(`.error-${name}`).textContent = !currentState[name].valid ? currentState[name].error : '';
 
   // activeButton();
-};
+}, 300);
 
 /* 로그인해야 접근할 수 있는 페이지에서 사용할 request */
 const authRequest = async () => {
@@ -88,12 +92,13 @@ const submit = async e => {
   try {
     if (currentPage === 'signin') {
       const res = await auth.signInWithEmailAndPassword(signinState.userid.value, signinState.password.value);
+      localStorage.setItem('username', signinState.userid.value);
       render(route(e));
     }
 
     if (currentPage === 'signup') {
       const res = await auth.createUserWithEmailAndPassword(signupState.userid.value, signupState.password.value);
-      db.collection(`${signupState.userid.value}`).doc('voteList').set({});
+      db.collection('users').doc(`${signupState.userid.value}`).set({});
       render(route(e));
     }
   } catch (err) {
@@ -103,7 +108,7 @@ const submit = async e => {
 
 /* express를 사용해서 구현한 방법 */
 const submitExpress = async e => {
-  if (!e.target.matches('form')) return;
+  if (!e.target.matches('.signin-btn') && !e.target.matches('.signup-btn')) return;
 
   e.preventDefault();
 
@@ -118,11 +123,15 @@ const submitExpress = async e => {
     const res = await axios.post(`/api/${currentPage}`, payload);
     if (res.status === 200) {
       console.log(`${res.data.userid} 성공~!`);
-      route('/');
+      render(route(e));
     }
   } catch (err) {
+    const { response } = err;
+    if (response.status === 400) {
+      console.log(response.data);
+    }
     console.error(err);
   }
 };
 
-export { toggleNav, validate, submit };
+export { toggleNav, validate, submit, submitExpress };

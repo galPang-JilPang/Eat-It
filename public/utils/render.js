@@ -1,4 +1,5 @@
-import { Home, Login, Voting, Add, Register, Welcome, MakeVoteList } from '../components/index.js';
+import { Home, Login, Voting, Add, Register, Welcome } from '../components/index.js';
+import { auth } from './firebase.js';
 
 const $root = document.getElementById('root');
 const routes = [
@@ -13,7 +14,13 @@ const routes = [
 ];
 
 const render = async path => {
-  const _path = path ?? window.location.pathname;
+  let _path = path ?? window.location.pathname;
+
+  auth.onAuthStateChanged(user => {
+    if (!user && ['/', '/voting', '/add', '/welcome'].includes(path)) {
+      _path = '/login';
+    }
+  });
 
   try {
     const component = routes.find(route => route.path === _path)?.component || NotFound;

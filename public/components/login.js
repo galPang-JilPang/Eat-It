@@ -11,13 +11,12 @@ const Login = () =>
     <form id="signin" class="signin-form">
 
       <label for="userid">이메일</label>
-      <input type="email" name="userid" autocomplete="off" />   
-
+      <input type="email" name="userid" autocomplete="off" />
+      <div class="error-userid"></div>
       <label for="password">비밀번호</label>
       <input type="password" name="password" autocomplete="off" />
-
+      <div class="error-password"></div>
       <a href="/" class="signin-btn">로그인</a>
-      <div class="error-msg"></div>
     </form>
   </div>
 `);
