@@ -2,14 +2,19 @@ import createElement from '../utils/createElement.js';
 import route from '../utils/route.js';
 import render from '../utils/render.js';
 import { db } from '../utils/firebase.js';
-
-const loginedEmail = localStorage.getItem('username');
+import Nav from './nav.js';
 
 const Home = async () => {
-  const homeBody = createElement('<div id="home"></div>');
+  const homeBody = createElement(`
+    ${Nav()}
+    <div id="home"></div>
+  `);
+
+  const loginedEmail = localStorage.getItem('username');
 
   const getVoteList = async () => {
     const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
+    console.log(doc);
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
     return voteItems.reverse();
@@ -55,22 +60,13 @@ const Home = async () => {
   const voteList = fetchUserVoteList(voteItems);
   const voteListElement = createElement(voteList);
 
-  homeBody.firstChild.append(voteListElement);
+  homeBody.getElementById('home').append(voteListElement);
   return homeBody;
-};
-
-const setHomeData = newHomeData => {
-  voteItems = newHomeData;
-
-  console.log(voteItems);
-
-  render();
 };
 
 const $root = document.getElementById('root');
 
 // 투표 목록 추가 버튼
-
 $root.addEventListener('click', e => {
   if (!e.target.closest('.add-vote')) return;
 
@@ -81,6 +77,7 @@ $root.addEventListener('click', e => {
 $root.addEventListener('click', async e => {
   if (!e.target.matches('.delete-vote')) return;
 
+  const loginedEmail = localStorage.getItem('username');
   const targetId = +e.target.closest('.card').id;
   const doc = await db.collection('users').doc(loginedEmail).collection('voteList').where('id', '==', targetId).get();
 
