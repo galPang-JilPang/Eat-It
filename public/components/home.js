@@ -12,10 +12,10 @@ const Home = async () => {
 
   const getVoteList = async () => {
     const loginedEmail = 'test1@test.com';
-    const doc = await db.collection(loginedEmail).doc('voteList').collection('voteItems').get();
+    const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
-    return voteItems;
+    return voteItems.reverse();
   };
 
   const isVoting = deadline => {
@@ -28,8 +28,8 @@ const Home = async () => {
   const fetchUserVoteList = voteItems => `
 
     <div class="member-title">은지님의 투표 목록
-     <a href="/home" class="add-vote">+</a>
-
+     <a href="/add" class="add-vote"><img src="../src/plus.png"/></a>
+          
    </div>
 
     <div class="vote-list-container">
@@ -44,9 +44,9 @@ const Home = async () => {
         ${stores ? stores.map(store => `<span>${store}</span>`).join(' ') : ''}
         </div>
       <div class="card-status">
-      <div class="is-votiong">${isVoting(deadline) ? '투표중' : '투표 완료'}</div>
-      <a href="/home" class="more-vote">더보기</a>
-     </div>
+        <div class="${isVoting(deadline) ? 'is-voting' : 'voted'}">${isVoting(deadline) ? '투표중' : '투표 완료'}</div>
+        <a href="${isVoting(deadline) ? '/voting' : '/voted'}" class="more-vote">더보기</a>
+      </div>
     </div> 
     `
          )
@@ -61,84 +61,6 @@ const Home = async () => {
   homeBody.firstChild.append(voteListElement);
   return homeBody;
 };
-
-// const Home = () => {
-//   const getVoteList = async () => {
-//     const loginedEmail = 'test1@test.com';
-//     const doc = await db.collection(loginedEmail).doc('voteList').collection('voteItems').get();
-//     const voteItems = doc.docs.map(voteItem => voteItem.data());
-
-//     return voteItems;
-//   };
-
-//   const isVoting = deadline => {
-
-//     const date = new Date().getTime();
-
-//     return deadline.getTime() > date;
-
-//   };
-
-//   return async () => {
-
-//     createElement(`
-
-//     <div id="home">
-
-//     <div class="member-title">은지님의 투표 목록
-
-//       <a href="/home" class="add-vote">+</a>
-
-//     </div>
-
-//     <div class="vote-list-container"></div>
-
-//     </div>
-
-//     `);
-
-//     const voteItems = await getVoteList();
-
-//     // prettier-ignore
-
-//     document.querySelector('.vote-list-container').innerHTML = `
-
-//       ${voteItems.map(({
-//     id, title, deadline, stores
-//   }) => `
-//         <div class="card" id="${id}">
-
-//           <button class ="delete-vote">X</button>
-
-//           <div class="vote-name">${title}</div>
-
-//           <a href="/" class="vote-link">공유링크</a>
-
-//           <div class="vote-date">${deadline}</div>
-
-//           <div class="stores">
-
-//           ${stores.map(store => `<span>${store}</span>`).join(' ')}
-
-//           </div>
-
-//         <div class="card-status">
-
-//         <div class="is-votiong">${isVoting ? '투표중' : '투표 완료'}</div>
-
-//         <a href="/home" class="more-vote">더보기</a>
-
-//         </div>
-
-//       </div>
-
-//       `).join('')}
-
-//     `;
-
-//   };
-
-// };
 
 const setHomeData = newHomeData => {
   voteItems = newHomeData;
@@ -160,10 +82,22 @@ $root.addEventListener('click', e => {
 
 // 투표 삭제
 
-$root.addEventListener('click', ({ target }) => {
-  if (!target.matches('.delete-vote')) return;
+$root.addEventListener('click', async e => {
+  if (!e.target.matches('.delete-vote')) return;
 
-  setHomeData(voteItems.filter(data => data.id !== +target.closest('.card').id));
+  const targetId = +e.target.closest('.card').id;
+
+  const loginedEmail = 'test1@test.com';
+  const doc = await db.collection('users').doc(loginedEmail).collection('voteList').where('id', '==', targetId).get();
+
+  doc.forEach(element => {
+    element.ref.delete();
+  });
+  render(route(e));
+  // const voteItems = doc.docs.map(voteItem => voteItem.data());
+
+  // console.log(voteItems);
+  // setHomeData(voteItems.filter(data => data.id !== +target.closest('.card').id));
 });
 
 $root.addEventListener('click', e => {

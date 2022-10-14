@@ -10,6 +10,7 @@ const routes = [
   { path: '/voting', component: Voting },
   { path: '/add', component: Add },
   { path: '/welcome', component: Welcome },
+  { path: '/makeVoteList', component: MakeVoteList },
 ];
 
 const render = async path => {
