@@ -15,10 +15,10 @@ const Home = async () => {
 
   const getVoteList = async () => {
     const loginedEmail = 'test1@test.com';
-    const doc = await db.collection('users').doc('voteList').collection(loginedEmail).get();
+    const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
-    return voteItems;
+    return voteItems.reverse();
   };
 
   const isVoting = deadline => {
@@ -83,10 +83,22 @@ $root.addEventListener('click', e => {
 
 // 투표 삭제
 
-$root.addEventListener('click', ({ target }) => {
-  if (!target.matches('.delete-vote')) return;
+$root.addEventListener('click', async e => {
+  if (!e.target.matches('.delete-vote')) return;
 
-  setHomeData(voteItems.filter(data => data.id !== +target.closest('.card').id));
+  const targetId = +e.target.closest('.card').id;
+
+  const loginedEmail = 'test1@test.com';
+  const doc = await db.collection('users').doc(loginedEmail).collection('voteList').where('id', '==', targetId).get();
+
+  doc.forEach(element => {
+    element.ref.delete();
+  });
+  render(route(e));
+  // const voteItems = doc.docs.map(voteItem => voteItem.data());
+
+  // console.log(voteItems);
+  // setHomeData(voteItems.filter(data => data.id !== +target.closest('.card').id));
 });
 
 $root.addEventListener('click', e => {

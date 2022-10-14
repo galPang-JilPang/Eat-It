@@ -38,7 +38,16 @@ li {
 a {
   text-decoration: none;
 }
+h1 {
+  margin: 0;
+}
+/*
+input[type='date']::-webkit-calendar-picker-indicator {
+  width: 100%;
 
+  left: 0;
+}
+*/
 /*   home css start*/
 #home {
   max-width: 980px;
@@ -134,7 +143,8 @@ a {
 
 /*   login css start*/
 #login,
-#register {
+#register,
+#add {
   background-color: var(--white-color);
   max-width: 400px;
   padding: 3rem;
@@ -162,7 +172,8 @@ a {
   padding-top: var(--gap);
 }
 .signin-form input,
-.signup-form input {
+.signup-form input,
+.add-form input {
   height: 2rem;
   border-radius: 10px;
   border: 1px solid var(--grey-color);
@@ -179,6 +190,7 @@ a {
 }
 .class-toggle {
   display: flex;
+  justify-content: space-between;
 }
 .class-toggle li.active {
   background-color: var(--primary-color);
@@ -202,3 +214,51 @@ a {
 }
 
 /*   login css end*/
+/*   add css start*/
+
+.add-title {
+  font-size: var(--item-title);
+  position: relative;
+}
+.add-form * {
+  width: 100%;
+  margin-top: 1rem;
+  box-sizing: border-box;
+}
+
+.add-form input[type='date' i],
+.add-form input[type='text' i] {
+  color: #999;
+  padding-left: 1rem;
+}
+.add-form .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  text-align: right;
+}
+.class-toggle label {
+  width: 40%;
+  text-align: center;
+  background-color: var(--white-color);
+  border: 1px solid var(--grey-color);
+  padding: var(--gap);
+  border-radius: 10px;
+  font-size: var(--item-description);
+}
+.class-toggle input:checked + label {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+.class-toggle .btn-add {
+  width: 40%;
+  font-size: var(--item-subdescription);
+  background-color: var(--primary-color);
+  border: 0;
+  padding: var(--gap);
+  border-radius: 20px;
+  color: white;
+  float: right;
+}
+/*   add css end*/
