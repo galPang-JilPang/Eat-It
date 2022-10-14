@@ -1,6 +1,10 @@
+import render from '../index.js';
+import route from './route.js';
+import { db } from '../utils/firebase.js';
 import fetchImage from './fetchimage.js';
 
 var markers = [];
+let selectedStoreList = [];
 function displayPagination(pagination) {
   var paginationEl = document.getElementById('pagination'),
     fragment = document.createDocumentFragment(),
@@ -144,11 +148,11 @@ function searchPlaces() {
 function getListItem(index, places) {
   var el = document.createElement('li'),
     itemStr = `
-          <div class="store-name">${places.place_name}</div>
-          <div class="store-description">${places.category_name}</div>
-          <span class="tel">${places.phone}</span>
-          <button>추가하기</button>
-          `;
+      <div class="store-name">${places.place_name}</div>
+      <div class="store-description">${places.category_name}</div>
+      <span class="tel">${places.phone}</span>
+      <button class="add-store" ${selectedStoreList.includes(places.id) ? 'disabled' : ''}>추가하기</button>
+    `;
   el.innerHTML = itemStr;
   el.className = 'item-' + places.id;
   fetchImage(places.place_name).then(({ data }) => {
@@ -158,7 +162,7 @@ function getListItem(index, places) {
         data.documents
           .map(
             store =>
-              `<div style="background-image: url(${store.thumbnail_url});width: 50px;height: 50px;background-size: contain;"></div>`
+              `<div class="thumbnail" style="background-image: url(${store.thumbnail_url});width: 50px;height: 50px;background-size: contain;"></div>`
           )
           .join('') +
         '</div>'
@@ -166,5 +170,82 @@ function getListItem(index, places) {
   });
   return el;
 }
+
+const renderSelectedStoreList = () => {
+  document.querySelector('#selected-stores > #placeList').innerHTML = `
+    ${selectedStoreList
+      .map(
+        ({ id, title, description, tel, thumbnails }) => `
+        <li id=${id}>
+          <div class="store-name">${title}</div>
+          <div class="store-description">${description}</div>
+          <span class="tel">${tel}</span>
+          <button class="remove-btn">삭제하기</button>
+          ${thumbnails
+            .map(
+              thumbnail =>
+                `<div style="background-image:url(${thumbnail});width:50px;height: 50px;background-size: contain;"></div>`
+            )
+            .join('')}
+          </li>`
+      )
+      .join('')}
+  `;
+};
+
+window.addEventListener('click', async e => {
+  if (!e.target.matches('.add-store')) return;
+
+  const $store = e.target.closest('li');
+  const selectedStore = {
+    id: $store.className.split('-')[1],
+    title: $store.querySelector('.store-name').textContent,
+    description: $store.querySelector('.store-description').textContent,
+    tel: $store.querySelector('.tel').textContent,
+    thumbnails: [...$store.querySelectorAll('.thumbnail')].map($store =>
+      $store.style.backgroundImage.slice(4, -1).replace(/"/g, '')
+    ),
+  };
+
+  selectedStoreList = [...selectedStoreList, selectedStore];
+
+  e.target.disabled = true;
+});
+
+window.addEventListener('click', e => {
+  if (!e.target.matches('#selected-stores > div')) return;
+  console.log(e.target);
+  renderSelectedStoreList();
+});
+
+window.addEventListener('click', e => {
+  if (!e.target.matches('.remove-btn')) return;
+  selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
+  console.log(selectedStoreList);
+  renderSelectedStoreList();
+});
+
+window.addEventListener('click', async e => {
+  console.log(e.target);
+  if (!e.target.matches('.total-submit-btn')) return;
+
+  e.preventDefault();
+
+  const user = localStorage.getItem('username');
+  const doc = await db.collection('users').doc(user).collection('voteList').get();
+  const currentId = Math.max(...doc.docs.map(element => +element.id), 0);
+  console.log(await db.collection('users').doc(user).collection('voteList').orderBy('deadline', 'desc').limit(1).get());
+  db.collection('users')
+    .doc(user)
+    .collection('voteList')
+    .orderBy('deadline', 'desc')
+    .limit(1)
+    .get()
+    .update({
+      stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
+    });
+  console.log(selectedStoreList);
+  render(route(e));
+});
 
 export { searchPlaces };

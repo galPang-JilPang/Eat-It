@@ -13,7 +13,7 @@ const makeVoteList = () => {
     });
   });
   return createElement(`
-  <div class="map_wrap">
+    <div class="map_wrap">
       <div
         id="map"
         style="width: 100%; height: 100%; position: relative; overflow: hidden"
@@ -36,7 +36,12 @@ const makeVoteList = () => {
         <div id="store-detail"></div>
       </div>
     </div>
-    
+    <div id="selected-stores" style="display: flex">
+      <div>저장목록</div>
+      <a href="/home" class="total-submit-btn">투표완료</a>
+      <hr />
+      <ul id="placeList"></ul>
+    </div>
 `);
 };
 

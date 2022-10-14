@@ -13,11 +13,16 @@ const Home = async () => {
   const loginedEmail = localStorage.getItem('username');
 
   const getVoteList = async () => {
-    const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
-    console.log(doc);
+    const doc = await db
+      .collection('users')
+      .doc(loginedEmail)
+      .collection('voteList')
+      .orderBy('timestamp', 'desc')
+      .get();
+
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
-    return voteItems.reverse();
+    return voteItems;
   };
 
   const isVoting = deadline => {
@@ -43,7 +48,7 @@ const Home = async () => {
          <a href="/" class="vote-link">공유링크</a>
         <div class="vote-date">${deadline}</div>
         <div class="stores">
-        ${stores ? stores.map(store => `<span>${store}</span>`).join(' ') : ''}
+        ${stores ? stores.map(({ title }, index) => (index < 3 ? `<span>${title}</span>` : '')).join(' ') : ''}
         </div>
       <div class="card-status">
         <div class="${isVoting(deadline) ? 'is-voting' : 'voted'}">${isVoting(deadline) ? '투표중' : '투표 완료'}</div>
