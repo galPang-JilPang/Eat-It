@@ -25,6 +25,7 @@ const Add = () =>
 const $root = document.getElementById('root');
 
 $root.addEventListener('submit', async e => {
+  if (!e.target.matches('.btn-add')) return;
   e.preventDefault();
 
   const voteTitle = $root.querySelector('.vote-title').value;
