@@ -13,16 +13,17 @@ const routes = [
   { path: '/makeVoteList', component: MakeVoteList },
 ];
 
+const authPath = ['/', '/home', '/voting', '/add'];
+
 const render = async path => {
   let _path = path ?? window.location.pathname;
 
-  auth.onAuthStateChanged(user => {
-    if (!user && ['/', '/voting', '/add', '/welcome'].includes(path)) {
-      _path = '/login';
-    }
-  });
-
+  const user = localStorage.getItem('username');
   try {
+    if (!user && authPath.includes(_path)) {
+      _path = '/login';
+      window.history.pushState(null, null, _path);
+    }
     const component = routes.find(route => route.path === _path)?.component || NotFound;
     $root.replaceChildren(await component());
   } catch (err) {
