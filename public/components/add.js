@@ -8,8 +8,8 @@ const Add = () =>
   <div id="add">
     <form class="add-form">
     <h1 class="add-title">투표 만들기 <a href="/" class="close">X</a></h1>
-    <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요"></input>
-    <input type="date" class="deadline"></input>
+    <input type="text" class="vote-title" placeholder="투표 이름을 작성해주세요" />
+    <input type="date" class="deadline"/>
     <div class="class-toggle">
     <input type="radio" id="single-vote" class="vote-type" name="vote-type" hidden/>
     <label for="single-vote">단일투표</label>
@@ -30,12 +30,10 @@ $root.addEventListener('submit', async e => {
   const voteId = [...$root.querySelectorAll('.vote-type')].find(type => type.checked).id;
   const voteType = document.querySelector(`label[for=${voteId}]`).textContent;
 
-  let id = 0;
-
-  const loginedEmail = 'test1@test.com';
+  const loginedEmail = localStorage.getItem('username');
   const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
 
-  id = Math.max(...doc.docs.map(element => +element.id)) + 1;
+  let id = Math.max(...doc.docs.map(element => +element.id), 0) + 1;
 
   db.collection('users').doc(loginedEmail).collection('voteList').doc(`${id}`).set(
     {

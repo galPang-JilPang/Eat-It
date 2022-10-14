@@ -3,15 +3,12 @@ import route from '../utils/route.js';
 import render from '../utils/render.js';
 import { db } from '../utils/firebase.js';
 
-// const getId = () => {
-//   return Math.max(...HomeData.map(store => store.id), 0) + 1;
-// };
+const loginedEmail = localStorage.getItem('username');
 
 const Home = async () => {
   const homeBody = createElement('<div id="home"></div>');
 
   const getVoteList = async () => {
-    const loginedEmail = 'test1@test.com';
     const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
     const voteItems = doc.docs.map(voteItem => voteItem.data());
 
@@ -27,17 +24,17 @@ const Home = async () => {
 
   const fetchUserVoteList = voteItems => `
 
-    <div class="member-title">은지님의 투표 목록
+    <div class="member-title">${loginedEmail.split('@')[0]}님의 투표 목록
      <a href="/add" class="add-vote"><img src="../src/plus.png"/></a>
-          
    </div>
 
     <div class="vote-list-container">
        ${voteItems
          .map(
-           ({ id, title, deadline, stores }) => `<div class="card" id="${id}">
-        <button class ="delete-vote">X</button>
-        <div class="vote-name">${title}</div>
+           ({ id, title, deadline, stores }) => `
+           <div class="card" id="${id}">
+            <button class ="delete-vote">X</button>
+            <div class="vote-name">${title}</div>
          <a href="/" class="vote-link">공유링크</a>
         <div class="vote-date">${deadline}</div>
         <div class="stores">
@@ -56,7 +53,7 @@ const Home = async () => {
     `;
   const voteItems = await getVoteList();
   const voteList = fetchUserVoteList(voteItems);
-  const voteListElement = await createElement(voteList);
+  const voteListElement = createElement(voteList);
 
   homeBody.firstChild.append(voteListElement);
   return homeBody;
@@ -75,29 +72,23 @@ const $root = document.getElementById('root');
 // 투표 목록 추가 버튼
 
 $root.addEventListener('click', e => {
-  if (!e.target.matches('.add-vote')) return;
+  if (!e.target.closest('.add-vote')) return;
 
   render(route(e));
 });
 
 // 투표 삭제
-
 $root.addEventListener('click', async e => {
   if (!e.target.matches('.delete-vote')) return;
 
   const targetId = +e.target.closest('.card').id;
-
-  const loginedEmail = 'test1@test.com';
   const doc = await db.collection('users').doc(loginedEmail).collection('voteList').where('id', '==', targetId).get();
 
   doc.forEach(element => {
     element.ref.delete();
   });
-  render(route(e));
-  // const voteItems = doc.docs.map(voteItem => voteItem.data());
 
-  // console.log(voteItems);
-  // setHomeData(voteItems.filter(data => data.id !== +target.closest('.card').id));
+  render();
 });
 
 $root.addEventListener('click', e => {
