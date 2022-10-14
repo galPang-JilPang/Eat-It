@@ -38,8 +38,9 @@ let currentPage = 'signin';
 let currentState = signinState;
 
 const toggleNav = e => {
-  e.preventDefault();
   if (!e.target.closest(`ul > .signin`) && !e.target.closest(`ul > .signup`)) return;
+
+  e.preventDefault();
 
   const isSigninPage = e.target.closest('li').classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';
