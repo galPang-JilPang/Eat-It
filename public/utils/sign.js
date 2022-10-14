@@ -39,14 +39,14 @@ let currentState = signinState;
 
 const toggleNav = e => {
   e.preventDefault();
-
-  if (!e.target.matches(`.${currentPage} > a`)) return;
+  if (!e.target.closest(`ul > .signin`) && !e.target.closest(`ul > .signup`)) return;
 
   const isSigninPage = e.target.closest('li').classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';
   currentState = isSigninPage ? signinState : signupState;
 
-  [...document.querySelectorAll('nav > ul > li')].forEach($li => $li.classList.toggle('active'));
+  [...document.querySelectorAll('.class-toggle > li')].forEach($li => $li.classList.toggle('active'));
+
   render(route(e));
 };
 
@@ -134,4 +134,28 @@ const submitExpress = async e => {
   }
 };
 
-export { toggleNav, validate, submit, submitExpress };
+const logout = async e => {
+  if (!e.target.closest('.logout')) return;
+
+  try {
+    await auth.signOut();
+    localStorage.removeItem('username');
+    render(route(e));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const logoutExpress = async e => {
+  if (!e.target.closest('.logout')) return;
+
+  try {
+    const res = await axios.post(`/api/logout`);
+    localStorage.removeItem('username');
+    render(route(e));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { toggleNav, validate, submit, submitExpress, logout, logoutExpress };
