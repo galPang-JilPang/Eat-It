@@ -51,7 +51,7 @@ function searchPlaces() {
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
       markers.push(marker); // 배열에 생성된 마커를 추가합니다
-      console.log(marker, map);
+      // console.log(marker, map);
       return marker;
     };
 
@@ -215,33 +215,34 @@ window.addEventListener('click', async e => {
 
 window.addEventListener('click', e => {
   if (!e.target.matches('#selected-stores > div')) return;
-  console.log(e.target);
+
   renderSelectedStoreList();
 });
 
 window.addEventListener('click', e => {
   if (!e.target.matches('.remove-btn')) return;
   selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
-  console.log(selectedStoreList);
+
   renderSelectedStoreList();
 });
 
 window.addEventListener('click', async e => {
-  console.log(e.target);
   if (!e.target.matches('.total-submit-btn')) return;
 
   e.preventDefault();
 
   const user = localStorage.getItem('username');
   const doc = await db.collection('users').doc(user).collection('voteList').get();
-  const currentId = Math.max(...doc.docs.map(element => +element.id), 0);
-  console.log(await db.collection('users').doc(user).collection('voteList').orderBy('deadline', 'desc').limit(1).get());
+  const a = await db.collection('users').doc(user).collection('voteList').orderBy('timestamp', 'desc').get();
+  console.log(a);
+  console.log(a.docs[0].id);
+  // a.limit(1).update({
+  //   stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
+  // });
   db.collection('users')
     .doc(user)
     .collection('voteList')
-    .orderBy('deadline', 'desc')
-    .limit(1)
-    .get()
+    .doc(a.docs[0].id)
     .update({
       stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
     });
