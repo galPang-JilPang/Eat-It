@@ -173,7 +173,7 @@ function getListItem(index, places) {
 }
 
 const renderSelectedStoreList = () => {
-  document.querySelector('#selected-stores > #placeList').innerHTML = `
+  document.querySelector('.store-detail').innerHTML = `
     ${selectedStoreList
       .map(
         ({ id, title, description, tel, thumbnails }) => `
@@ -214,7 +214,8 @@ window.addEventListener('click', async e => {
 });
 
 window.addEventListener('click', e => {
-  if (!e.target.matches('#selected-stores > div')) return;
+  if (!e.target.matches('.store-detail')) return;
+  console.log(e.target);
 
   renderSelectedStoreList();
 });
@@ -232,17 +233,12 @@ window.addEventListener('click', async e => {
   e.preventDefault();
 
   const user = localStorage.getItem('username');
-  const doc = await db.collection('users').doc(user).collection('voteList').get();
-  const a = await db.collection('users').doc(user).collection('voteList').orderBy('timestamp', 'desc').get();
-  console.log(a);
-  console.log(a.docs[0].id);
-  // a.limit(1).update({
-  //   stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
-  // });
+  const currentId = await db.collection('users').doc(user).collection('voteList').orderBy('timestamp', 'desc').get();
+
   db.collection('users')
     .doc(user)
     .collection('voteList')
-    .doc(a.docs[0].id)
+    .doc(currentId.docs[0].id)
     .update({
       stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
     });

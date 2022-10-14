@@ -466,6 +466,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   margin-right: var(--gap);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
+
 #placesList .store-detail,
 #placesList .add-store {
   font-size: var(--item-subdescription);
@@ -479,7 +480,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   top: var(--card-padding);
   right: var(--card-padding);
 }
-.add-store:disabled {
+#placesList .add-store:disabled {
   background-color: var(--grey-color);
 }
 #store-detail iframe {
