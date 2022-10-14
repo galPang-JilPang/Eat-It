@@ -28,9 +28,8 @@ const makeVoteList = () => {
       </button>
     </li>
     <li>
-      <button class="map-generate">
-        투표 생성
-      </button>
+    <a href="/home" class="total-submit-btn">투표 완료</a>
+
     </li>
   </ul>
       <div id="map" ></div>
@@ -51,7 +50,6 @@ const makeVoteList = () => {
         <div id="store-detail"></div>
       </div>
     </div>
-    
 `);
 };
 

@@ -466,7 +466,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
   margin-right: var(--gap);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
-#placesList .store-detail {
+#placesList .store-detail,
+#placesList .add-store {
   font-size: var(--item-subdescription);
   border: 0;
   background-color: var(--primary-color);
@@ -494,7 +495,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
   padding: var(--round-diameter);
   box-sizing: border-box;
 }
-.map-sidebar button {
+.map-sidebar button,
+.map-sidebar a {
   display: block;
   background: none;
   border: 0;
@@ -503,13 +505,17 @@ input[type='date']::-webkit-calendar-picker-indicator {
   word-break: keep-all;
   font-weight: 800;
 }
+
 .map-sidebar button.map-home {
   color: var(--primary-color);
 }
 .map-sidebar button.store-name {
   color: var(--primary-color);
 }
-.map-sidebar button.map-generate {
+.map-sidebar a.total-submit-btn {
+  display: flex;
+  align-items: center;
+  text-align: center;
   color: var(--white-color);
   background-color: var(--tertiary-color);
   border-radius: var(--border-radius);
