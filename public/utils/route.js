@@ -1,7 +1,7 @@
 const route = e => {
   e.preventDefault();
 
-  const path = e.target.getAttribute('href');
+  const path = e.target.closest('a').getAttribute('href');
 
   if (window.location.pathname === path) return;
   window.history.pushState(null, null, path);
