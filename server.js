@@ -51,7 +51,7 @@ app.post('/api/signin', (req, res) => {
 });
 
 app.post('/api/signup', (req, res) => {
-  const { username, userid, password } = req.body;
+  const { userid, password } = req.body;
 
   const user = users.findUser(userid, password);
   if (user) {
@@ -60,9 +60,9 @@ app.post('/api/signup', (req, res) => {
     return;
   }
 
-  users.addUser({ username, userid, password });
+  users.addUser({ id: userid, password });
 
-  res.send({ username, userid });
+  res.send({ userid });
 });
 
 // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)

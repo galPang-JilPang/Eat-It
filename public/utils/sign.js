@@ -92,6 +92,7 @@ const submit = async e => {
   try {
     if (currentPage === 'signin') {
       const res = await auth.signInWithEmailAndPassword(signinState.userid.value, signinState.password.value);
+      localStorage.setItem('username', signinState.userid.value);
       render(route(e));
     }
 
@@ -107,7 +108,7 @@ const submit = async e => {
 
 /* express를 사용해서 구현한 방법 */
 const submitExpress = async e => {
-  if (!e.target.matches('form')) return;
+  if (!e.target.matches('.signin-btn') && !e.target.matches('.signup-btn')) return;
 
   e.preventDefault();
 
@@ -122,11 +123,15 @@ const submitExpress = async e => {
     const res = await axios.post(`/api/${currentPage}`, payload);
     if (res.status === 200) {
       console.log(`${res.data.userid} 성공~!`);
-      route('/');
+      render(route(e));
     }
   } catch (err) {
+    const { response } = err;
+    if (response.status === 400) {
+      console.log(response.data);
+    }
     console.error(err);
   }
 };
 
-export { toggleNav, validate, submit };
+export { toggleNav, validate, submit, submitExpress };
