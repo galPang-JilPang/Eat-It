@@ -6,6 +6,7 @@ import Nav from './nav.js';
 
 const Add = () =>
   createElement(`
+  ${Nav()}
   <div id="add">
     <form class="add-form">
     <h1 class="add-title">투표 만들기 <a href="/" class="close">X</a></h1>
