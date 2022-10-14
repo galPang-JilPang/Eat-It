@@ -31,7 +31,7 @@ function displayPagination(pagination) {
 }
 function searchPlaces() {
   kakao.maps.load(() => {
-    function addMarker(position, idx, title) {
+    const addMarker = (position, idx, title) => {
       var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
         imgOptions = {
@@ -47,9 +47,9 @@ function searchPlaces() {
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
       markers.push(marker); // 배열에 생성된 마커를 추가합니다
-
+      console.log(marker, map);
       return marker;
-    }
+    };
 
     const displayPlaces = places => {
       var listEl = document.getElementById('placesList'),
@@ -117,6 +117,7 @@ function searchPlaces() {
       level: 3,
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
+
     var ps = new kakao.maps.services.Places();
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -147,18 +148,18 @@ function getListItem(index, places) {
           <div class="store-name">${places.place_name}</div>
           <div class="store-description">${places.category_name}</div>
           <span class="tel">${places.phone}</span>
-          <button>추가하기</button>
+          <button class="store-detail">추가하기</button>
           `;
   el.innerHTML = itemStr;
   el.className = 'item-' + places.id;
   fetchImage(places.place_name).then(({ data }) => {
     el.insertAdjacentHTML(
       'beforeend',
-      "<div style='display:flex'>" +
+      "<div class='store-images'>" +
         data.documents
           .map(
             store =>
-              `<div style="background-image: url(${store.thumbnail_url});width: 50px;height: 50px;background-size: contain;"></div>`
+              `<div class="store-image" style="background-image: url(${store.thumbnail_url});background-size: contain;"></div>`
           )
           .join('') +
         '</div>'
