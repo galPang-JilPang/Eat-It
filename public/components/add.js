@@ -36,14 +36,15 @@ $root.addEventListener('click', async e => {
   const loginedEmail = localStorage.getItem('username');
   const doc = await db.collection('users').doc(loginedEmail).collection('voteList').get();
 
-  let id = Math.max(...doc.docs.map(element => +element.id), 0) + 1;
-
-  db.collection('users').doc(loginedEmail).collection('voteList').doc(`${id}`).set(
+  let id = doc.docs.length + 1;
+  db.collection('users').doc(loginedEmail).collection('voteList').doc().set(
     {
       id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       title: voteTitle,
       deadline,
       voteType,
+      stores: [],
     },
     { merge: true }
 
