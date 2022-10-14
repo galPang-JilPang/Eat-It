@@ -192,6 +192,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
   display: flex;
   justify-content: space-between;
 }
+
+.class-toggle li a {
+  width: 100%;
+  display: block;
+}
 .class-toggle li.active {
   background-color: var(--primary-color);
 }
@@ -199,7 +204,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   width: 50%;
   text-align: center;
   background-color: var(--grey-color);
-  padding: var(--gap);
+
   border-radius: 10px;
   font-size: var(--item-description);
 }
@@ -209,7 +214,17 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .class-toggle li:last-child {
   border-radius: 0px 10px 10px 0px;
 }
+
+.class-toggle li.active a {
+  background-color: var(--primary-color);
+}
+
 .class-toggle li a {
+  box-sizing: border-box;
+  background-color: var(--grey-color);
+  padding: var(--gap);
+  border-radius: 10px;
+  font-size: var(--item-description);
   color: var(--white-color);
 }
 

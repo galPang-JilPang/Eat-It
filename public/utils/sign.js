@@ -37,13 +37,20 @@ const signupState = {
 let currentPage = 'signin';
 let currentState = signinState;
 
+const setCurrentPage = page => {
+  if (currentPage === page) return;
+
+  currentPage = page;
+  currentState = page === 'signin' ? signinState : signupState;
+};
+
 const toggleNav = e => {
+  if (!e.target.closest(`.class-toggle > .signin`) && !e.target.closest(`.class-toggle > .signup`)) return;
+
   e.preventDefault();
-  if (!e.target.closest(`ul > .signin`) && !e.target.closest(`ul > .signup`)) return;
 
   const isSigninPage = e.target.closest('li').classList.contains('signin');
-  currentPage = isSigninPage ? 'signin' : 'signup';
-  currentState = isSigninPage ? signinState : signupState;
+  setCurrentPage(isSigninPage ? 'signin' : 'signup');
 
   [...document.querySelectorAll('.class-toggle > li')].forEach($li => $li.classList.toggle('active'));
 
@@ -56,7 +63,9 @@ const activeButton = () => {
 };
 
 const validate = _.debounce(e => {
-  if (!e.target.matches(`.${currentPage}-form > input`)) return;
+  if (!e.target.matches(`.signin-form > input`) && !e.target.matches(`.signup-form > input`)) return;
+
+  setCurrentPage(e.target.closest('form').id);
 
   const { name, value } = e.target;
   currentState[name].value = value.trim();
