@@ -1,4 +1,4 @@
-import { Home, Login, Voting, Add, Register, Welcome } from '../components/index.js';
+import { Home, Login, Voting, Add, Register, Welcome, MakeVoteList } from '../components/index.js';
 import { auth } from './firebase.js';
 
 const $root = document.getElementById('root');
