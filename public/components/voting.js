@@ -1,6 +1,7 @@
 import createElement from '../utils/createElement.js';
+import Nav from './nav.js';
 
-let votingData = {
+const votingData = {
   voteTitle: '강남역 고고',
   deadline: 2022 - 10 - 23,
   voteType: '단일투표',
@@ -41,37 +42,35 @@ let votingData = {
   ],
 };
 
-const Voting = () => {
-  return createElement(`  
-  <div class="voting-list">
-  <div class="vote-name">${votingData.voteTitle}</div>
-  <a href="/" class="voting-link">공유링크</a>
-  <div class="voting-deadline">${votingData.deadline}</div>
-  <div class="voting-type">${votingData.voteType}</div>
-  <button class="end-voting">투표 완료</button>
+// prettier-ignore
+const Voting = () => createElement(`
+    ${Nav()}  
+    <div class="voting-list">
+      <div class="vote-name">${votingData.voteTitle}</div>
+      <a href="/" class="voting-link">공유링크</a>
+      <div class="voting-deadline">${votingData.deadline}</div>
+      <div class="voting-type">${votingData.voteType}</div>
+      <button class="end-voting">투표 완료</button>
 
-  <div class="voting-list">
-  ${votingData.stores
-    .map(
-      ({ id, title, description, rating, reviews, img }) => `
-    <div class="store-card">
-      <input type="checkbox" id="${id}" class="voting-btn" name="voting"/>
-      <div class="store-name">${title}</div>
-      <div class="store-description">${description}</div>
-      <div class="store-rating">${rating}</div>
-      <div class="store-review">${reviews} 리뷰수</div>
-      <div class="store-img-contaienr">
-      ${img.map(img => `<img src="${img}" alt="음식점사진" />`).join('')}
+      <div class="voting-list">
+      ${votingData.stores.map(({
+    id, title, description, rating, reviews, img
+  }) => `
+        <div class="store-card">
+          <input type="checkbox" id="${id}" class="voting-btn" name="voting"/>
+          <div class="store-name">${title}</div>
+          <div class="store-description">${description}</div>
+          <div class="store-rating">${rating}</div>
+          <div class="store-review">${reviews} 리뷰수</div>
+          <div class="store-img-contaienr">
+          ${img.map(img => `<img src="${img}" alt="음식점사진" />`).join('')}
+          </div>
+        </div>
+      `)
+    .join('')}
       </div>
     </div>
-  `
-    )
-    .join('')}
-    
-  </div>
-
-</div>`);
-};
+    `);
 
 const $root = document.getElementById('root');
 
