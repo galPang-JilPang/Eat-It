@@ -18,13 +18,13 @@ const Add = () =>
     <input type="radio" id="multi-vote" class="vote-type" name="vote-type" hidden/>
     <label for="multi-vote">다중투표</label>
     </div>
-    <button class="btn-add" type="submit">추가하기</button>
+    <a class="btn-add" href="/makeVoteList">추가하기</a>
     </form>
   </div>`);
 
 const $root = document.getElementById('root');
 
-$root.addEventListener('submit', async e => {
+$root.addEventListener('click', async e => {
   if (!e.target.matches('.btn-add')) return;
   e.preventDefault();
 
@@ -51,7 +51,7 @@ $root.addEventListener('submit', async e => {
   );
 
   // 다음 페이지로 넘어가야되는데 일단 이거 해둡니다~
-  $root.querySelector('form').reset();
+  render(route(e));
 });
 
 $root.addEventListener('click', e => {

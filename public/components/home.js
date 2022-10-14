@@ -47,7 +47,7 @@ const Home = async () => {
         </div>
       <div class="card-status">
         <div class="${isVoting(deadline) ? 'is-voting' : 'voted'}">${isVoting(deadline) ? '투표중' : '투표 완료'}</div>
-        <a href="${isVoting(deadline) ? '/voting' : '/voted'}" class="more-vote">더보기</a>
+        <a href="${isVoting(deadline) ? '/makeVoteList' : '/voted'}" class="more-vote">더보기</a>
       </div>
     </div> 
     `
