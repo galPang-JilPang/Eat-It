@@ -479,6 +479,9 @@ input[type='date']::-webkit-calendar-picker-indicator {
   top: var(--card-padding);
   right: var(--card-padding);
 }
+.add-store:disabled {
+  background-color: var(--grey-color);
+}
 #store-detail iframe {
   width: 340px;
 }
