@@ -39,14 +39,14 @@ let currentState = signinState;
 
 const toggleNav = e => {
   e.preventDefault();
-
-  if (!e.target.matches(`.${currentPage} > a`)) return;
+  if (!e.target.closest(`ul > .signin`) && !e.target.closest(`ul > .signup`)) return;
 
   const isSigninPage = e.target.closest('li').classList.contains('signin');
   currentPage = isSigninPage ? 'signin' : 'signup';
   currentState = isSigninPage ? signinState : signupState;
 
-  [...document.querySelectorAll('nav > ul > li')].forEach($li => $li.classList.toggle('active'));
+  [...document.querySelectorAll('.class-toggle > li')].forEach($li => $li.classList.toggle('active'));
+
   render(route(e));
 };
 
