@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-
 const users = require('./public/utils/user.js');
 
 const app = express();
@@ -63,6 +62,10 @@ app.post('/api/signup', (req, res) => {
   users.addUser({ id: userid, password });
 
   res.send({ userid });
+});
+
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('accessToken');
 });
 
 // 브라우저 새로고침을 위한 처리 (다른 route가 존재하는 경우 맨 아래에 위치해야 한다)

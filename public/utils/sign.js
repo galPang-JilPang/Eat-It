@@ -134,4 +134,28 @@ const submitExpress = async e => {
   }
 };
 
-export { toggleNav, validate, submit, submitExpress };
+const logout = async e => {
+  if (!e.target.closest('.logout')) return;
+
+  try {
+    await auth.signOut();
+    localStorage.removeItem('username');
+    render(route(e));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const logoutExpress = async e => {
+  if (!e.target.closest('.logout')) return;
+
+  try {
+    const res = await axios.post(`/api/logout`);
+    localStorage.removeItem('username');
+    render(route(e));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { toggleNav, validate, submit, submitExpress, logout, logoutExpress };
