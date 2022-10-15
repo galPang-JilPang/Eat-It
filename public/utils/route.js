@@ -1,11 +1,13 @@
 const route = e => {
   e.preventDefault();
-
-  const path = e.target.closest('a').getAttribute('href');
+  const href = e.target.closest('a').getAttribute('href');
+  const [path, params] = href.split('/:');
 
   if (window.location.pathname === path) return;
-  window.history.pushState(null, null, path);
-  return path;
+  console.log(params ? href : path);
+  window.history.pushState(null, null, params ? href : path);
+
+  return { path, params };
 };
 
 export default route;
