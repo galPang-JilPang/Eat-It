@@ -2,47 +2,6 @@ import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import Nav from './nav.js';
 
-const votingData = {
-  voteTitle: '강남역 고고',
-  deadline: 2022 - 10 - 23,
-  voteType: '단일투표',
-  stores: [
-    {
-      id: 1,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-    {
-      id: 2,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-    {
-      id: 3,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-
-    {
-      id: 4,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-  ],
-};
-
 // prettier-ignore
 const Voting = async params => {
   const getVoteItem = async id => {
@@ -88,20 +47,17 @@ const Voting = async params => {
   return domStr(voteItem)
 };
 
-const $root = document.getElementById('root');
-
-const selectOnlyOne = e => {
-  [...$root.querySelectorAll('.voting-btn')].forEach(checkbox => {
-    checkbox.checked = checkbox === e.target;
+const selectOnlyOne = $input => {
+  [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
+    checkbox.checked = checkbox === $input;
   });
 };
 
-$root.addEventListener('click', e => {
+window.addEventListener('click', e => {
   if (!e.target.matches('.voting-btn')) return;
-
-  if (votingData.voteType === '단일투표') {
-    selectOnlyOne(e);
-  }
+  // 위에 있는 voteItem 가져와야되는디요...............
+  const voteType = document.querySelector('.voting-type').textContent;
+  if (voteType === '단일투표') selectOnlyOne(e.target);
 });
 
 export default Voting;
