@@ -378,9 +378,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
 /*   add css end*/
 /*   makeVoteList css start*/
 #map {
-  width: calc(100% - var(--map-sidebar-width) - var(--map-sidebar-margin) - var(--menu-width));
+  width: calc(100% - var(--nav-height));
   height: 100%;
-  transform: translate3d(calc(var(--map-sidebar-margin) + var(--menu-width)), 0, 0);
 }
 .map_wrap {
   position: relative;
@@ -388,49 +387,78 @@ input[type='date']::-webkit-calendar-picker-indicator {
   height: 100vh;
   display: flex;
 }
-#menu_wrap {
+#menu_wrap,
+#menu_voted {
   position: absolute;
   top: 0;
   left: var(--map-sidebar-width);
   margin-left: var(--map-sidebar-margin);
   bottom: 0;
-
+  overflow-x: scroll;
   z-index: 1;
   font-size: 12px;
   border-radius: 10px;
 }
-#menu_select {
+
+#menu_voted {
   width: var(--menu-width);
-  overflow-y: auto;
+  padding-top: var(--gap);
+}
+.vote-information {
+  margin-top: var(--gap);
+}
+.voting {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+.voting-container {
+  padding-top: var(--nav-height);
+}
+.vote-information,
+#menu_select,
+.store-card,
+.voting-list {
+  width: var(--menu-width);
 }
 
-#menu_wrap .store-name {
+#menu_wrap .store-name,
+#menu_voted .store-name,
+.store-card .store-name {
   font-size: var(--item-subtitle);
   line-height: var(--item-subtitle);
   font-weight: bold;
   padding-bottom: var(--gap);
   width: calc(100% - 4.5rem);
 }
-#menu_wrap .store-description {
+#menu_wrap .store-description,
+#menu_voted .store-description,
+.store-card .store-description {
   font-size: var(--item-subdescription);
   padding-bottom: var(--gap);
 }
 #menu_wrap .tel {
   font-size: var(--item-description);
 }
-#menu_wrap .store-images {
+#menu_wrap .store-images,
+#menu_voted .store-images,
+.store-card .store-images {
   display: flex;
   overflow-x: scroll;
   gap: var(--gap);
   cursor: grab;
 }
-#menu_wrap .store-image {
+#menu_wrap .store-image,
+#menu_voted .store-image,
+.store-card .store-image {
   min-width: 100px;
   min-height: 100px;
   margin-bottom: 0.5rem;
 }
 #store-keyword input {
+  box-sizing: border-box;
   height: var(--input-height);
+
   padding-left: var(--gap);
   border: 0;
   width: 100%;
@@ -457,7 +485,10 @@ input[type='date']::-webkit-calendar-picker-indicator {
 #placesList {
   margin-top: var(--gap);
 }
-#placesList [class*='item-'] {
+.vote-information,
+#placesList [class*='item-'],
+#menu_voted li,
+.store-card {
   position: relative;
   background: var(--white-color);
   padding: var(--card-padding);
@@ -466,7 +497,10 @@ input[type='date']::-webkit-calendar-picker-indicator {
   margin-right: var(--gap);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
-#placesList .store-detail {
+.vote-information .end-voting,
+#placesList .store-detail,
+#placesList .add-store,
+#menu_voted .remove-btn {
   font-size: var(--item-subdescription);
   border: 0;
   background-color: var(--primary-color);
@@ -477,6 +511,13 @@ input[type='date']::-webkit-calendar-picker-indicator {
   position: absolute;
   top: var(--card-padding);
   right: var(--card-padding);
+}
+#placesList .add-store:disabled {
+  background-color: var(--grey-color);
+}
+#store-detail {
+  position: fixed;
+  left: calc(var(--map-sidebar-width) + var(--menu-width) + var(--map-sidebar-margin));
 }
 #store-detail iframe {
   width: 340px;
@@ -494,7 +535,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
   padding: var(--round-diameter);
   box-sizing: border-box;
 }
-.map-sidebar button {
+.map-sidebar button,
+.map-sidebar a {
   display: block;
   background: none;
   border: 0;
@@ -503,13 +545,17 @@ input[type='date']::-webkit-calendar-picker-indicator {
   word-break: keep-all;
   font-weight: 800;
 }
+
 .map-sidebar button.map-home {
   color: var(--primary-color);
 }
 .map-sidebar button.store-name {
   color: var(--primary-color);
 }
-.map-sidebar button.map-generate {
+.map-sidebar a.total-submit-btn {
+  display: flex;
+  align-items: center;
+  text-align: center;
   color: var(--white-color);
   background-color: var(--tertiary-color);
   border-radius: var(--border-radius);
@@ -527,6 +573,8 @@ nav {
   height: var(--nav-height);
   width: 100%;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+  position: fixed;
+  top: 0px;
 }
 nav ul {
   display: flex;
@@ -540,3 +588,7 @@ nav a {
   color: var(--black-color);
 }
 /*   nav css end*/
+
+.hidden {
+  display: none;
+}
