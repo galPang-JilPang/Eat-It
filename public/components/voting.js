@@ -1,91 +1,77 @@
 import createElement from '../utils/createElement.js';
+import { db } from '../utils/firebase.js';
 import Nav from './nav.js';
-
-const votingData = {
-  voteTitle: '강남역 고고',
-  deadline: 2022 - 10 - 23,
-  voteType: '단일투표',
-  stores: [
-    {
-      id: 1,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-    {
-      id: 2,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-    {
-      id: 3,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-
-    {
-      id: 4,
-      title: '대낚식당',
-      description: '모두를 낚을 것 같은 그 맛.',
-      rating: 4.0,
-      reviews: 7,
-      img: ['/'],
-    },
-  ],
-};
-
 // prettier-ignore
-const Voting = () => createElement(`
-    ${Nav()}  
-    <div class="voting-list">
-      <div class="vote-name">${votingData.voteTitle}</div>
-      <a href="/" class="voting-link">공유링크</a>
-      <div class="voting-deadline">${votingData.deadline}</div>
-      <div class="voting-type">${votingData.voteType}</div>
-      <button class="end-voting">투표 완료</button>
+const Voting = async params => {
+  const selectOnlyOne = $input => {
+    [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
+      checkbox.checked = checkbox === $input;
+    });
+  };
 
-      <div class="voting-list">
-      ${votingData.stores.map(({
-    id, title, description, rating, reviews, img
-  }) => `
-        <div class="store-card">
-          <input type="checkbox" id="${id}" class="voting-btn" name="voting"/>
-          <div class="store-name">${title}</div>
-          <div class="store-description">${description}</div>
-          <div class="store-rating">${rating}</div>
-          <div class="store-review">${reviews} 리뷰수</div>
-          <div class="store-img-contaienr">
-          ${img.map(img => `<img src="${img}" alt="음식점사진" />`).join('')}
-          </div>
-        </div>
-      `)
-    .join('')}
-      </div>
-    </div>
-    `);
-
-const $root = document.getElementById('root');
-
-const singleVote = e => {
-  $root
-    .querySelectorAll('.voting-btn')
-    .forEach(checkbox => (checkbox.id !== e.target.id ? (checkbox.checked = false) : (checkbox.checked = true)));
-};
-
-$root.addEventListener('click', e => {
-  if (!e.target.matches('.voting-btn')) return;
-
-  if (votingData.voteType === '단일투표') {
-    singleVote(e);
+  const getVoteItem = async id => {
+    /*
+      voteItem의 id 값을 params로 전달받습니다.
+      로그인한 사용자의 voteList에서 params로 받은 id값으로 voteItem을 가져옵니다.
+    */
+    const user = localStorage.getItem('username');
+    const doc = await db.collection('votes').where("id", "==", id).get();
+    let voteItem = {}
+    doc.forEach(docs => {
+      voteItem = docs.data();
+    })
+    return voteItem
   }
-});
+
+  const domStr = voteItem => createElement(`
+    <div class="voting">
+      ${Nav()}  
+      <div class="voting-container">
+        <div class="vote-information">
+          <span class="vote-name">${voteItem.title}</span>
+          <span href="/" class="voting-link">공유링크</span>
+          <div class="voting-deadline">마감일 : ${voteItem.deadline}</div>
+          <div class="voting-type">투표 방식 : ${voteItem.voteType}</div>
+          <button class="end-voting">투표 완료</button>
+        </div>
+        
+        <div class="voting-list">
+          ${voteItem.stores.map(({ id, title, description, thumbnails }) => `
+            <div class="store-card">
+            <input type="checkbox" id="${id}" class="voting-btn" name="voting"/>
+            <div class="store-name">${title}</div>
+            <div class="store-description">${description}</div>
+            <div class="store-images">
+            ${thumbnails.map(thumbnail =>
+              `<div class="store-image" style="background-image:url(${thumbnail});background-size: contain;"></div>`
+              ).join('')}
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div id="map" ></div>
+    </div>`)
+
+  const voteItem = await getVoteItem(params);
+
+  window.addEventListener('click', async e => {
+    if (!e.target.matches('.end-voting')) return;
+  
+    const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
+    window.localStorage.setItem('voteList', JSON.stringify([...voteList, params]));
+
+    const selectedStore = [...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked).map($checkbox => $checkbox.id);
+    const newStores = voteItem.stores.map(store => selectedStore.includes(store.id) ? { ...store, countVote: store.countVote + 1 } : store)
+    await db.collection('votes').doc(params).update({ stores: newStores });
+  });
+  
+  window.addEventListener('click', e => {
+    if (!e.target.matches('.voting-btn')) return;
+
+    if (voteItem.voteType === '단일투표') selectOnlyOne(e.target);
+  });
+
+  return domStr(voteItem)
+};
 
 export default Voting;
