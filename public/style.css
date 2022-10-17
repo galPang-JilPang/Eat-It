@@ -515,11 +515,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
 #placesList .add-store:disabled {
   background-color: var(--grey-color);
 }
-#store-detail {
+<<<<<<< HEAD #store-detail {
   position: fixed;
   left: calc(var(--map-sidebar-width) + var(--menu-width) + var(--map-sidebar-margin));
 }
-#store-detail iframe {
+=======>>>>>>>1c98b208c9c4ecf321b1e9be16cf768fcb6061b9 #store-detail iframe {
   width: 340px;
 }
 /* map sidebar start */

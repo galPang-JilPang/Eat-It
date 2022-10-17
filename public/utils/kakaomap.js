@@ -1,7 +1,9 @@
+import render from '../index.js';
+import route from './route.js';
+import { db } from '../utils/firebase.js';
 import fetchImage from './fetchimage.js';
 
 var markers = [];
-
 function displayPagination(pagination) {
   var paginationEl = document.getElementById('pagination'),
     fragment = document.createDocumentFragment(),
