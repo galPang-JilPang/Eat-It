@@ -8,6 +8,7 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/home', component: Home },
   { path: '/voting', component: Voting },
+  { path: '/voted', component: Voting },
   { path: '/add', component: Add },
   { path: '/welcome', component: Welcome },
   { path: '/makeVoteList', component: MakeVoteList },
@@ -15,8 +16,14 @@ const routes = [
 
 const authPath = ['/', '/home', '/voting', '/add'];
 
-const render = async path => {
-  let _path = path ?? window.location.pathname;
+const render = async url => {
+  /*
+    투표 목록에서 더보기 버튼을 누르면 route parameter로 해당 투표의 아이디를 전달합니다.
+    path는 /voting/:id -> 다른 방법이 없는지 생각해보겠습니다..
+    component의 인수로 params를 전달합니다.
+  */
+  let _path = url?.path ?? window.location.pathname;
+  const params = url?.params;
 
   const user = localStorage.getItem('username');
   try {
@@ -25,7 +32,7 @@ const render = async path => {
       window.history.pushState(null, null, _path);
     }
     const component = routes.find(route => route.path === _path)?.component || NotFound;
-    $root.replaceChildren(await component());
+    $root.replaceChildren(await component(params));
   } catch (err) {
     console.error(err);
   }
