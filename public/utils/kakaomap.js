@@ -1,6 +1,7 @@
 import fetchImage from './fetchimage.js';
 
 var markers = [];
+
 function displayPagination(pagination) {
   var paginationEl = document.getElementById('pagination'),
     fragment = document.createDocumentFragment(),
@@ -29,7 +30,8 @@ function displayPagination(pagination) {
   }
   paginationEl.appendChild(fragment);
 }
-function searchPlaces() {
+
+function searchPlaces(params) {
   kakao.maps.load(() => {
     const addMarker = (position, idx, title) => {
       var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
@@ -47,7 +49,7 @@ function searchPlaces() {
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
       markers.push(marker); // 배열에 생성된 마커를 추가합니다
-      console.log(marker, map);
+      // console.log(marker, map);
       return marker;
     };
 
@@ -143,13 +145,14 @@ function searchPlaces() {
 }
 
 function getListItem(index, places) {
+  const selectedStoreId = [...document.getElementById('menu_voted')?.querySelectorAll('li')].map(store => store.id);
   var el = document.createElement('li'),
     itemStr = `
-          <div class="store-name">${places.place_name}</div>
-          <div class="store-description">${places.category_name}</div>
-          <span class="tel">${places.phone}</span>
-          <button class="store-detail">추가하기</button>
-          `;
+      <div class="store-name">${places.place_name}</div>
+      <div class="store-description">${places.category_name}</div>
+      <span class="tel">${places.phone}</span>
+      <button class="add-store" ${selectedStoreId.includes(places.id) ? 'disabled' : ''}>추가하기</button>
+    `;
   el.innerHTML = itemStr;
   el.className = 'item-' + places.id;
   fetchImage(places.place_name).then(({ data }) => {
@@ -167,5 +170,90 @@ function getListItem(index, places) {
   });
   return el;
 }
+
+// const renderSelectedStoreList = () => {
+//   // prettier-ignore
+//   document.querySelector('#store-detail').innerHTML = `
+//     ${selectedStoreList.map(
+//       ({ id, title, description, tel, thumbnails }) => `
+//         <li id=${id}>
+//           <div class="store-name">${title}</div>
+//           <div class="store-description">${description}</div>
+//           <span class="tel">${tel}</span>
+//           <button class="remove-btn">삭제하기</button>
+//           <div class="store-images">
+//           ${thumbnails.map(thumbnail =>
+//             `<div style="background-image:url(${thumbnail});width:50px;height: 50px;background-size: contain;"></div>`
+//           ).join('')}
+//           </div>
+//         </li>`
+//       )
+//     .join('')}
+//   `;
+// };
+
+// window.addEventListener('click', async e => {
+//   if (!e.target.matches('.add-store')) return;
+
+//   const $store = e.target.closest('li');
+//   const selectedStore = {
+//     id: $store.className.split('-')[1],
+//     title: $store.querySelector('.store-name').textContent,
+//     description: $store.querySelector('.store-description').textContent,
+//     tel: $store.querySelector('.tel').textContent,
+//     thumbnails: [...$store.querySelectorAll('.store-image')].map($store =>
+//       $store.style.backgroundImage.slice(4, -1).replace(/"/g, '')
+//     ),
+//   };
+
+//   selectedStoreList = [...selectedStoreList, selectedStore];
+
+//   e.target.disabled = true;
+// });
+
+// window.addEventListener('click', e => {
+//   if (!e.target.matches('.map-home')) return;
+
+//   document.querySelector('#store-detail').style.display = 'none';
+//   document.querySelector('#menu_select').style.display = 'block';
+
+//   renderSelectedStoreList();
+// });
+
+// window.addEventListener('click', e => {
+//   if (!e.target.matches('.map-list')) return;
+
+//   document.querySelector('#store-detail').style.display = 'block';
+//   document.querySelector('#menu_select').style.display = 'none';
+
+//   renderSelectedStoreList();
+// });
+
+// window.addEventListener('click', e => {
+//   if (!e.target.matches('.remove-btn')) return;
+//   selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
+
+//   renderSelectedStoreList();
+// });
+
+// window.addEventListener('click', async e => {
+//   if (!e.target.matches('.total-submit-btn')) return;
+
+//   e.preventDefault();
+
+//   // const user = localStorage.getItem('username');
+
+//   const uuid = await db.collection('votes').doc();
+
+//   uuid.set({
+//     stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
+//     owner: user,
+//     id: uuid.id,
+//   });
+
+//   db.collection('users').doc(user).collection('voteList').doc(uuid.id).set({});
+
+//   render(route(e));
+// });
 
 export { searchPlaces };
