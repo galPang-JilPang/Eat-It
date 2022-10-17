@@ -173,24 +173,23 @@ function getListItem(index, places) {
 }
 
 const renderSelectedStoreList = () => {
-  document.querySelector('.store-detail').innerHTML = `
-    ${selectedStoreList
-      .map(
-        ({ id, title, description, tel, thumbnails }) => `
+  // prettier-ignore
+  document.querySelector('#store-detail').innerHTML = `
+    ${selectedStoreList.map(
+      ({ id, title, description, tel, thumbnails }) => `
         <li id=${id}>
           <div class="store-name">${title}</div>
           <div class="store-description">${description}</div>
           <span class="tel">${tel}</span>
           <button class="remove-btn">삭제하기</button>
-          ${thumbnails
-            .map(
-              thumbnail =>
-                `<div style="background-image:url(${thumbnail});width:50px;height: 50px;background-size: contain;"></div>`
-            )
-            .join('')}
-          </li>`
+          <div class="store-images">
+          ${thumbnails.map(thumbnail =>
+            `<div style="background-image:url(${thumbnail});width:50px;height: 50px;background-size: contain;"></div>`
+          ).join('')}
+          </div>
+        </li>`
       )
-      .join('')}
+    .join('')}
   `;
 };
 
@@ -203,7 +202,7 @@ window.addEventListener('click', async e => {
     title: $store.querySelector('.store-name').textContent,
     description: $store.querySelector('.store-description').textContent,
     tel: $store.querySelector('.tel').textContent,
-    thumbnails: [...$store.querySelectorAll('.thumbnail')].map($store =>
+    thumbnails: [...$store.querySelectorAll('.store-image')].map($store =>
       $store.style.backgroundImage.slice(4, -1).replace(/"/g, '')
     ),
   };
@@ -214,8 +213,19 @@ window.addEventListener('click', async e => {
 });
 
 window.addEventListener('click', e => {
-  if (!e.target.matches('.store-detail')) return;
-  console.log(e.target);
+  if (!e.target.matches('.map-home')) return;
+
+  document.querySelector('#store-detail').style.display = 'none';
+  document.querySelector('#menu_select').style.display = 'block';
+
+  renderSelectedStoreList();
+});
+
+window.addEventListener('click', e => {
+  if (!e.target.matches('.map-list')) return;
+
+  document.querySelector('#store-detail').style.display = 'block';
+  document.querySelector('#menu_select').style.display = 'none';
 
   renderSelectedStoreList();
 });
