@@ -56,8 +56,8 @@ const Voting = async params => {
 
   const domStr = voteItem =>
     createElement(`
+    ${Nav()}
     <div class="voting">
-      ${Nav()}
       <div class="voting-container">
         <div class="vote-information">
           <span class="vote-name">${voteItem.title}</span>
@@ -92,6 +92,16 @@ const Voting = async params => {
     </div>
   `);
 
+
+  const endVote = () => 
+    createElement(`
+    ${Nav()}
+    <div class="vote-complete">
+      <div class="vote-complete-message">투표를 완료했습니다</div>
+    </div>
+    `)
+  
+
   const voteItem = await getVoteItem(params);
 
   window.addEventListener('click', handleCompleteVote);
@@ -99,7 +109,7 @@ const Voting = async params => {
              
   kakao.maps.load( ()=> { marker(voteItem.stores)});
 
-  return isValidUser(params) ? domStr(voteItem) : '이미 완료된 투표입니다';
+  return isValidUser(params) ? domStr(voteItem) : endVote();
 };
 
 export default Voting;

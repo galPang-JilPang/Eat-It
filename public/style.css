@@ -628,3 +628,15 @@ nav a {
   padding-top: var(--gap-02);
 }
 /* addVote end */
+/* voting start */
+.vote-complete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.vote-complete-message {
+  background-color: var(--white-color);
+}
+/* voting end */
