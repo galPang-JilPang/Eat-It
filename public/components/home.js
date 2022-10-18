@@ -80,6 +80,7 @@ $root.addEventListener('click', async e => {
   const targetId = e.target.closest('.card').id;
 
   db.collection('votes').doc(targetId).delete();
+  db.collection('users').doc(loginedEmail).collection('voteList').doc(targetId).delete();
 
   render();
 });
