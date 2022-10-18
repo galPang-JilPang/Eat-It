@@ -620,3 +620,11 @@ nav a {
   border-radius: 5px;
 }
 /* pagination end */
+/* addVote start */
+.warning-message {
+  display: none;
+  color: var(--red-color);
+  font-size: var(--item-subdescription);
+  padding-top: var(--gap-02);
+}
+/* addVote end */
