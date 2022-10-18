@@ -39,26 +39,25 @@ const makeVoteList = params => {
     selectedStoreList = [...selectedStoreList, selectedStore];
 
     e.target.disabled = true;
+    renderSelectedStoreList(selectedStoreList);
   });
 
   window.addEventListener('click', async e => {
     if (e.target.matches('.map-home')) {
       document.querySelector('#menu_voted').style.display = 'none';
       document.querySelector('#menu_wrap').style.display = 'block';
-      renderSelectedStoreList(selectedStoreList);
     }
     if (e.target.matches('.map-list')) {
       document.querySelector('#menu_voted').style.display = 'block';
       document.querySelector('#menu_wrap').style.display = 'none';
-
-      renderSelectedStoreList(selectedStoreList);
     }
     if (e.target.matches('.remove-btn')) {
       selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
       renderSelectedStoreList(selectedStoreList);
 
       const targetId = e.target.closest('li').id;
-      document.querySelector(`li.item-${targetId}`).querySelector('.add-store').disabled = false;
+      const $addStore = document.querySelector(`li.item-${targetId} .add-store`);
+      if ($addStore) $addStore.disabled = false;
     }
     if (e.target.matches('.total-submit-btn')) {
       e.preventDefault();
