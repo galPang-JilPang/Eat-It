@@ -32,6 +32,8 @@ const makeVoteList = params => {
       thumbnails: [...$store.querySelectorAll('.store-image')].map($store =>
         $store.style.backgroundImage.slice(4, -1).replace(/"/g, '')
       ),
+      x: $store.querySelector('.x').textContent,
+      y: $store.querySelector('.y').textContent,
     };
 
     selectedStoreList = [...selectedStoreList, selectedStore];

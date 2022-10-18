@@ -145,7 +145,6 @@ function searchPlaces() {
 }
 
 function getListItem(index, places) {
-  console.log(places);
   const selectedStoreId = [...document.getElementById('menu_voted')?.querySelectorAll('li')].map(store => store.id);
   var el = document.createElement('li'),
     itemStr = `
@@ -153,7 +152,9 @@ function getListItem(index, places) {
       <div class="store-description">${places.category_name}</div>
       <span class="tel">${places.phone}</span>
       <button class="add-store" ${selectedStoreId.includes(places.id) ? 'disabled' : ''}>추가하기</button>
-    `;
+      <div class="x hidden">${places.x}</div>
+      <div class="y hidden">${places.y}</div>
+      `;
   el.innerHTML = itemStr;
   el.className = 'item-' + places.id;
   fetchImage(places.place_name).then(({ data }) => {
