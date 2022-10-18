@@ -47,6 +47,12 @@ const Voting = async params => {
     routeHome()
   }
 
+  const selectOnlyOne = $input => {
+    [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
+      checkbox.checked = checkbox === $input;
+    });
+  };
+
   const domStr = voteItem => createElement(`
     <div class="voting">
       ${Nav()}
