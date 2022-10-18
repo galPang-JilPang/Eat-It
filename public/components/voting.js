@@ -1,8 +1,11 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
+import appendKakaoApi from '../utils/kakaoapi.js';
+import { searchPlaces } from '../utils/kakaomap.js';
 import Nav from './nav.js';
 // prettier-ignore
 const Voting = async params => {
+
   const selectOnlyOne = $input => {
     [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
       checkbox.checked = checkbox === $input;
@@ -53,7 +56,7 @@ const Voting = async params => {
     </div>`)
 
   const voteItem = await getVoteItem(params);
-
+  searchPlaces();
   window.addEventListener('click', async e => {
     if (!e.target.matches('.end-voting')) return;
   

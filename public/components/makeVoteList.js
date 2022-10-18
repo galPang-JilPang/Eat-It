@@ -4,17 +4,19 @@ import { searchPlaces } from '../utils/kakaomap.js';
 import route from '../utils/route.js';
 import render from '../utils/render.js';
 import renderSelectedStoreList from './renderSelectedStoreList.js';
-
+import appendKakaoApi from '../utils/kakaoapi.js';
 const makeVoteList = params => {
   let selectedStoreList = [];
-
-  window.addEventListener('load', () => {
-    // searchPlaces();
-    window.addEventListener('submit', e => {
-      if (!e.target.matches('#store-keyword')) return;
-      e.preventDefault();
+  if (window.kakao) searchPlaces();
+  else {
+    window.addEventListener('load', () => {
       searchPlaces();
     });
+  }
+  window.addEventListener('submit', e => {
+    if (!e.target.matches('#store-keyword')) return;
+    e.preventDefault();
+    searchPlaces();
   });
 
   window.addEventListener('click', async e => {
