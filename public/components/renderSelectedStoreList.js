@@ -1,7 +1,14 @@
 const renderSelectedStoreList = selectedStoreList => {
   // prettier-ignore
   document.querySelector('#menu_voted').innerHTML = `
-    ${selectedStoreList.map(({ id, title, description, tel, thumbnails }) => `
+    ${
+      selectedStoreList<1? `
+      <div class="empty-store">
+        투표할 음식점이 없습니다.\n
+        음식점을 추가해주세요.
+      </div>
+      `
+      :selectedStoreList.map(({ id, title, description, tel, thumbnails }) => `
       <li id=${id}>
         <div class="store-name">${title}</div>
         <div class="store-description">${description}</div>
