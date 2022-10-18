@@ -99,6 +99,7 @@
 }
 html {
   font-family: 'Pretendard';
+  overflow: hidden;
 }
 body {
   margin: 0;
