@@ -21,13 +21,17 @@ const Voted = async params => {
     return voteItem
   }
 
-  const domStr = voteItem => createElement(`
+  const getSortedStores = stores => {
+    return stores.sort((prevStore, nextStore) => nextStore.countVote - prevStore.countVote)
+  }
+
+  const domStr = stores => createElement(`
     <div class="voting">
       ${Nav()}
       <div class="voting-container">        
         <div class="voting-list">
-          ${voteItem.stores.map(({ id, title, description, thumbnails, countVote }) => `
-            <div class="store-card ${Math.max(...voteItem.stores.map(store => store.countVote), 0) === countVote ? 'win-vote' : ''}">
+          ${stores.map(({ id, title, description, thumbnails, countVote }, index) => `
+            <div class="store-card ${index === 0 ? 'win-vote' : ''}">
               <div class="store-name">${title}</div>
               <div class="store-description">${description}</div>
               <div class="store-images">
@@ -42,7 +46,9 @@ const Voted = async params => {
     </div>`)
 
   const voteItem = await getVoteItem(params);
-  return domStr(voteItem)
+  const sortedStores = getSortedStores(voteItem.stores)
+  console.log(sortedStores);
+  return domStr(sortedStores)
 };
 
 export default Voted;
