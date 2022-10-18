@@ -5,14 +5,17 @@ import route from '../utils/route.js';
 import render from '../utils/render.js';
 import renderSelectedStoreList from './renderSelectedStoreList.js';
 import appendKakaoApi from '../utils/kakaoapi.js';
+
 const makeVoteList = params => {
   let selectedStoreList = [];
+
   if (window.kakao) searchPlaces();
   else {
     window.addEventListener('load', () => {
       searchPlaces();
     });
   }
+
   window.addEventListener('submit', e => {
     if (!e.target.matches('#store-keyword')) return;
     e.preventDefault();
@@ -61,6 +64,12 @@ const makeVoteList = params => {
     }
     if (e.target.matches('.total-submit-btn')) {
       e.preventDefault();
+
+      if (selectedStoreList.length < 2) {
+        window.alert('음식점을 2 곳이상 추가해주세요');
+        return;
+      }
+
       const voteItem = await db.collection('votes').doc(params);
       voteItem.update({ stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList) });
       render(route(e));
@@ -134,7 +143,6 @@ const makeVoteList = params => {
       </li>
       <li>
       <a href="/home" class="total-submit-btn">투표 완료</a>
-
       </li>
     </ul>
         <div id="map" ></div>
