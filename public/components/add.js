@@ -22,6 +22,7 @@ const Add = async () => {
       <label for="multi-vote">다중투표</label>
       </div>
       <a class="btn-add" href="/makeVoteList/:${uuid.id}">추가하기</a>
+      <div class="warning-message">입력되지 않은 항목이 있습니다.</div>
       </form>
     </div>`);
 
@@ -35,14 +36,24 @@ $root.addEventListener('click', async e => {
 
   e.preventDefault();
 
+  const voteId = [...$root.querySelectorAll('.vote-type')].find(type => type.checked)?.id;
+  const title = $root.querySelector('.vote-title').value;
+  const deadline = $root.querySelector('.deadline').value;
+  const voteType = document.querySelector(`label[for=${voteId}]`)?.textContent;
+
+  if (!title || !deadline || !voteId) {
+    document.querySelector('.warning-message').style.display = 'block';
+    return;
+  }
+
+  document.querySelector('.warning-message').style.display = 'none';
+
   const user = localStorage.getItem('username');
 
-  const voteId = [...$root.querySelectorAll('.vote-type')].find(type => type.checked).id;
-
   const data = {
-    title: $root.querySelector('.vote-title').value,
-    deadline: $root.querySelector('.deadline').value,
-    voteType: document.querySelector(`label[for=${voteId}]`).textContent,
+    title,
+    deadline,
+    voteType,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     stores: [],
   };
