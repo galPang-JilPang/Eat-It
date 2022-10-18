@@ -1,5 +1,7 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
+import appendKakaoApi from '../utils/kakaoapi.js';
+import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
 // prettier-ignore
@@ -94,6 +96,8 @@ const Voting = async params => {
 
   window.addEventListener('click', handleCompleteVote);
   window.addEventListener('click', handleSingleVote);
+             
+  kakao.maps.load( ()=> { marker(voteItem.stores)});
 
   return isValidUser(params) ? domStr(voteItem) : '이미 완료된 투표입니다';
 };

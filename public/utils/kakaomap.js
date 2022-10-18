@@ -15,7 +15,6 @@ function displayPagination(pagination) {
 
   for (i = 1; i <= pagination.last; i++) {
     var el = document.createElement('a');
-    el.href = '#';
     el.innerHTML = i;
 
     if (i === pagination.current) {
@@ -33,7 +32,7 @@ function displayPagination(pagination) {
   paginationEl.appendChild(fragment);
 }
 
-function searchPlaces(params) {
+function searchPlaces() {
   kakao.maps.load(() => {
     const addMarker = (position, idx, title) => {
       var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
@@ -51,7 +50,6 @@ function searchPlaces(params) {
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
       markers.push(marker); // 배열에 생성된 마커를 추가합니다
-      // console.log(marker, map);
       return marker;
     };
 
@@ -154,7 +152,9 @@ function getListItem(index, places) {
       <div class="store-description">${places.category_name}</div>
       <span class="tel">${places.phone}</span>
       <button class="add-store" ${selectedStoreId.includes(places.id) ? 'disabled' : ''}>추가하기</button>
-    `;
+      <div class="x hidden">${places.x}</div>
+      <div class="y hidden">${places.y}</div>
+      `;
   el.innerHTML = itemStr;
   el.className = 'item-' + places.id;
   fetchImage(places.place_name).then(({ data }) => {

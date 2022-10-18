@@ -73,6 +73,7 @@
 
   --border-radius: 20px;
   --border-radius-10: 10px;
+  --gap-02: 0.2rem;
   --gap: 0.5rem;
   --gap-1: 1rem;
 
@@ -84,6 +85,7 @@
   --input-height: 2rem;
 
   --menu-width: 15rem;
+  --vote-width: 20rem;
 
   --map-sidebar-width: 5rem;
   --map-sidebar-margin: 1rem;
@@ -91,6 +93,8 @@
   --map-search-height: 1.6rem;
   --map-add-height: 1.5rem;
   --map-add-width: 4rem;
+
+  --pagination-height: 1.1rem;
 }
 html {
   font-family: 'Pretendard';
@@ -134,13 +138,9 @@ h1 {
   border-radius: 10px;
   background: #595959;
 }
-/*
-input[type='date']::-webkit-calendar-picker-indicator {
-  width: 100%;
-
-  left: 0;
+.hidden {
+  display: none;
 }
-*/
 /*   home css start*/
 #home {
   max-width: 980px;
@@ -389,10 +389,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 #menu_wrap,
 #menu_voted {
+  background: var(--secondary-color);
   position: absolute;
   top: 0;
   left: var(--map-sidebar-width);
-  margin-left: var(--map-sidebar-margin);
+  padding-left: var(--map-sidebar-margin);
   bottom: 0;
   overflow-x: scroll;
   z-index: 1;
@@ -413,11 +414,12 @@ input[type='date']::-webkit-calendar-picker-indicator {
   height: 100vh;
 }
 .voting-container {
-  padding-top: var(--nav-height);
+  overflow-y: scroll;
+  padding-top: calc(var(--nav-height) + 2rem);
+
+  width: var(--vote-width);
 }
-.vote-information,
 #menu_select,
-.store-card,
 .voting-list {
   width: var(--menu-width);
 }
@@ -497,7 +499,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   margin-right: var(--gap);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
-.vote-information .end-voting,
+
 #placesList .store-detail,
 #placesList .add-store,
 #menu_voted .remove-btn {
@@ -512,14 +514,25 @@ input[type='date']::-webkit-calendar-picker-indicator {
   top: var(--card-padding);
   right: var(--card-padding);
 }
+.vote-information .end-voting {
+  font-size: var(--item-description);
+  border: 0;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  margin-top: var(--gap);
+  border-radius: var(--border-radius);
+  padding: var(--gap-02);
+  top: var(--card-padding);
+  right: var(--card-padding);
+}
 #placesList .add-store:disabled {
   background-color: var(--grey-color);
 }
-<<<<<<< HEAD #store-detail {
+#store-detail {
   position: fixed;
   left: calc(var(--map-sidebar-width) + var(--menu-width) + var(--map-sidebar-margin));
 }
-=======>>>>>>>1c98b208c9c4ecf321b1e9be16cf768fcb6061b9 #store-detail iframe {
+#store-detail iframe {
   width: 340px;
 }
 /* map sidebar start */
@@ -575,6 +588,7 @@ nav {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
   position: fixed;
   top: 0px;
+  z-index: 2;
 }
 nav ul {
   display: flex;
@@ -589,6 +603,20 @@ nav a {
 }
 /*   nav css end*/
 
-.hidden {
-  display: none;
+/* pagination start */
+#pagination {
+  height: var(--pagination-height);
+  font-size: var(--pagination-height);
+  text-align: center;
+  margin: var(--gap-1);
 }
+#pagination a {
+  padding: var(--gap);
+  margin: var(--gap-02);
+}
+#pagination a.on {
+  background-color: var(--tertiary-color);
+  color: var(--white-color);
+  border-radius: 5px;
+}
+/* pagination end */
