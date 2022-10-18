@@ -45,12 +45,15 @@ const makeVoteList = params => {
     if (e.target.matches('.map-home')) {
       document.querySelector('#menu_voted').style.display = 'none';
       document.querySelector('#menu_wrap').style.display = 'block';
+      document.querySelector('.map-home').classList.add('active');
+      document.querySelector('.map-list').classList.remove('active');
       renderSelectedStoreList(selectedStoreList);
     }
     if (e.target.matches('.map-list')) {
       document.querySelector('#menu_voted').style.display = 'block';
       document.querySelector('#menu_wrap').style.display = 'none';
-
+      document.querySelector('.map-home').classList.remove('active');
+      document.querySelector('.map-list').classList.add('active');
       renderSelectedStoreList(selectedStoreList);
     }
     if (e.target.matches('.remove-btn')) {
@@ -67,64 +70,12 @@ const makeVoteList = params => {
       render(route(e));
     }
   });
-  // window.addEventListener('beforeunload', () => {
-  //   console.log(db.collection('votes').doc(params));
-  // if (isSubmitted) return;
-  // db.collection('votes').doc(params).delete();
-  // });
-  // window.addEventListener('click', e => {
-  //   if (!e.target.matches('.map-home')) return;
-
-  //   document.querySelector('#store-detail').style.display = 'none';
-  //   document.querySelector('#menu_select').style.display = 'block';
-
-  //   renderSelectedStoreList();
-  // });
-
-  // window.addEventListener('click', e => {
-  //   if (!e.target.matches('.map-list')) return;
-
-  //   document.querySelector('#store-detail').style.display = 'block';
-  //   document.querySelector('#menu_select').style.display = 'none';
-
-  //   renderSelectedStoreList();
-  // });
-
-  // window.addEventListener('click', e => {
-  //   if (!e.target.matches('.remove-btn')) return;
-  //   selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
-
-  //   renderSelectedStoreList();
-  // });
-
-  // window.addEventListener('click', async e => {
-  //   if (!e.target.matches('.total-submit-btn')) return;
-
-  //   e.preventDefault();
-
-  //   const voteItem = await db
-  //     .collection('votes')
-  //     .where('id', '==', params)
-  //     .update({ stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList) });
-
-  // const uuid = await db.collection('votes').doc();
-
-  // uuid.set({
-  //   stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
-  //   owner: user,
-  //   id: uuid.id,
-  // });
-
-  // db.collection('users').doc(user).collection('voteList').doc(uuid.id).set({});
-
-  // render(route(e));
-  // });
 
   return createElement(`
     <div class="map_wrap">
     <ul class="map-sidebar">
       <li>
-        <button class="map-home">
+        <button class="map-home active">
           지도 홈
         </button>
       </li>
@@ -155,7 +106,9 @@ const makeVoteList = params => {
           </div>
           <div id="store-detail"></div>
         </div>
-        <div id="menu_voted" style="display:none;"></div>
+        <div id="menu_voted" style="display:none;">
+          투표할 음식점이 없습니다. 음식점을 추가해주세요.
+        </div>
       </div>
 `);
 };
