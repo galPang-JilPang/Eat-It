@@ -16,6 +16,7 @@ const Login = () =>
       <label for="password">비밀번호</label>
       <input type="password" name="password" autocomplete="off" />
       <div class="error-password"></div>
+      <div class="error-message"></div>
       <a href="/" class="signin-btn">로그인</a>
     </form>
   </div>
