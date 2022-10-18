@@ -85,6 +85,7 @@
   --input-height: 2rem;
 
   --menu-width: 15rem;
+  --vote-width: 20rem;
 
   --map-sidebar-width: 5rem;
   --map-sidebar-margin: 1rem;
@@ -413,11 +414,12 @@ h1 {
   height: 100vh;
 }
 .voting-container {
-  padding-top: var(--nav-height);
+  overflow-y: scroll;
+  padding-top: calc(var(--nav-height) + 2rem);
+
+  width: var(--vote-width);
 }
-.vote-information,
 #menu_select,
-.store-card,
 .voting-list {
   width: var(--menu-width);
 }
@@ -497,7 +499,7 @@ h1 {
   margin-right: var(--gap);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
-.vote-information .end-voting,
+
 #placesList .store-detail,
 #placesList .add-store,
 #menu_voted .remove-btn {
@@ -509,6 +511,17 @@ h1 {
   height: var(--map-add-height);
   border-radius: var(--border-radius);
   position: absolute;
+  top: var(--card-padding);
+  right: var(--card-padding);
+}
+.vote-information .end-voting {
+  font-size: var(--item-description);
+  border: 0;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  margin-top: var(--gap);
+  border-radius: var(--border-radius);
+  padding: var(--gap-02);
   top: var(--card-padding);
   right: var(--card-padding);
 }
@@ -575,6 +588,7 @@ nav {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
   position: fixed;
   top: 0px;
+  z-index: 2;
 }
 nav ul {
   display: flex;
