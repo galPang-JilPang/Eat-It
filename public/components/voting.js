@@ -47,15 +47,12 @@ const Voting = async params => {
     routeHome()
   }
 
-  const handleSingleVote = e => {
-    if (!e.target.matches('.voting-btn')) return;
-    
-    if (voteItem.voteType === '단일투표') {
-      [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
-        checkbox.checked = checkbox === e.target;
-      });
-      }
-  }
+  const selectOnlyOne = $input => {
+    [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
+      checkbox.checked = checkbox === $input;
+    });
+  };
+
 
   const domStr = voteItem =>
     createElement(`
