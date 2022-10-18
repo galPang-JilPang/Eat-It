@@ -7,7 +7,10 @@ const signinState = {
   userid: {
     value: '',
     get valid() {
-      return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(this.value);
+      return (
+        this.value &&
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(this.value)
+      );
     },
     error: '이메일 형식에 맞게 입력해 주세요.',
   },
@@ -28,7 +31,7 @@ const signupState = {
   'confirm-password': {
     value: '',
     get valid() {
-      return signinState.password.value === this.value;
+      return signupState.password.valid && signinState.password.value === this.value;
     },
     error: '패스워드가 일치하지 않습니다.',
   },
@@ -70,8 +73,15 @@ const validate = _.debounce(e => {
   const { name, value } = e.target;
   currentState[name].value = value.trim();
 
-  document.querySelector(`.error-${name}`).textContent = !currentState[name].valid ? currentState[name].error : '';
+  document.querySelector(`.error-${name}`).textContent =
+    currentState[name].value && !currentState[name].valid ? currentState[name].error : '';
 
+  if (name === 'password' && currentState['confirm-password']?.value) {
+    document.querySelector(`.error-confirm-password`).textContent =
+      currentState['confirm-password'].value && !currentState['confirm-password']?.valid
+        ? currentState['confirm-password'].error
+        : '';
+  }
   // activeButton();
 }, 300);
 
@@ -112,6 +122,8 @@ const submit = async e => {
     }
   } catch (err) {
     console.error(err);
+    document.querySelector('.signin-form .error-message').textContent =
+      '이메일과 비밀번호가 일치하지 않습니다. 다시 입력해주세요.';
   }
 };
 
