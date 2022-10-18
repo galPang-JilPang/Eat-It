@@ -1,4 +1,4 @@
-import { Home, Login, Voting, Add, Register, Welcome, MakeVoteList } from '../components/index.js';
+import { Home, Login, Voting, Voted, Add, Register, Welcome, MakeVoteList } from '../components/index.js';
 import { auth } from './firebase.js';
 
 const $root = document.getElementById('root');
@@ -8,13 +8,13 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/home', component: Home },
   { path: '/voting', component: Voting },
-  { path: '/voted', component: Voting },
+  { path: '/voted', component: Voted },
   { path: '/add', component: Add },
   { path: '/welcome', component: Welcome },
   { path: '/makeVoteList', component: MakeVoteList },
 ];
 
-const authPath = ['/', '/home', '/voting', '/add'];
+const authPath = ['/', '/home', '/add'];
 
 const render = async url => {
   /*
