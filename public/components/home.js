@@ -36,12 +36,21 @@ const Home = async () => {
      <a href="/add" class="add-vote"><img src="../src/plus.png"/></a>
    </div>
     <div class="vote-list-container">
-       ${voteItems.map(({ id, title, deadline, stores }) => `
+       ${
+        voteItems.length<1? 
+        `<div class="empty">투표 목록을 추가해주세요</div>`
+        :
+        voteItems.map(({ id, title, deadline, stores }) => {
+          if(stores.length<1){
+            db.collection('votes').doc(id).delete(); 
+            return ``}
+          else return `
         <div class="card" id="${id}">
-          <button class ="delete-vote">X</button>
+          <button class ="delete-vote">⨉</button>
           <div class="vote-name">
             ${title}
-            <a href="/voting/:${id}" class="vote-link">공유링크</a>
+            <input class="copy-value" value="${window.location.origin}${isVoting(deadline) ? `/voting/:${id}` : `/voted/:${id}`}"/>
+            <button class="vote-link"><img src="../src/link.png"/></button>
           </div>
           <div class="vote-date">${deadline}</div>
           <div class="stores">
@@ -52,7 +61,7 @@ const Home = async () => {
             <a href="${isVoting(deadline) ? `/voting/:${id}` : `/voted/:${id}`}" class="more-vote">더보기</a>
           </div>
         </div> 
-      `).join('')}
+      `}).join('')}
     </div>
     </div>
     `;
@@ -67,9 +76,14 @@ const Home = async () => {
 
 const $root = document.getElementById('root');
 // 투표 목록 추가 버튼
+
 $root.addEventListener('click', e => {
   if (e.target.closest('.add-vote')) render(route(e));
   if (e.target.matches('.more-vote')) render(route(e));
+  if (e.target.matches('.vote-link')) {
+    const input = e.target.closest('.vote-name').querySelector('.copy-value');
+    navigator.clipboard.writeText(input.value);
+  }
 });
 
 // 투표 삭제

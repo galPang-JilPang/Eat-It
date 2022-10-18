@@ -134,7 +134,7 @@ function searchPlaces() {
     ps.keywordSearch(keyword, placesSearchCB);
 
     document.querySelector('#menu_select').addEventListener('click', ({ target }) => {
-      if (target.closest('li') && target.closest('li').className.includes('item')) {
+      if (target.closest('li') && target.closest('li').className.includes('item') && !target.matches('.add-store')) {
         const id = target.closest('li').className.split('-')[1];
         document.querySelector(
           '#store-detail'
@@ -172,90 +172,5 @@ function getListItem(index, places) {
   });
   return el;
 }
-
-// const renderSelectedStoreList = () => {
-//   // prettier-ignore
-//   document.querySelector('#store-detail').innerHTML = `
-//     ${selectedStoreList.map(
-//       ({ id, title, description, tel, thumbnails }) => `
-//         <li id=${id}>
-//           <div class="store-name">${title}</div>
-//           <div class="store-description">${description}</div>
-//           <span class="tel">${tel}</span>
-//           <button class="remove-btn">삭제하기</button>
-//           <div class="store-images">
-//           ${thumbnails.map(thumbnail =>
-//             `<div style="background-image:url(${thumbnail});width:50px;height: 50px;background-size: contain;"></div>`
-//           ).join('')}
-//           </div>
-//         </li>`
-//       )
-//     .join('')}
-//   `;
-// };
-
-// window.addEventListener('click', async e => {
-//   if (!e.target.matches('.add-store')) return;
-
-//   const $store = e.target.closest('li');
-//   const selectedStore = {
-//     id: $store.className.split('-')[1],
-//     title: $store.querySelector('.store-name').textContent,
-//     description: $store.querySelector('.store-description').textContent,
-//     tel: $store.querySelector('.tel').textContent,
-//     thumbnails: [...$store.querySelectorAll('.store-image')].map($store =>
-//       $store.style.backgroundImage.slice(4, -1).replace(/"/g, '')
-//     ),
-//   };
-
-//   selectedStoreList = [...selectedStoreList, selectedStore];
-
-//   e.target.disabled = true;
-// });
-
-// window.addEventListener('click', e => {
-//   if (!e.target.matches('.map-home')) return;
-
-//   document.querySelector('#store-detail').style.display = 'none';
-//   document.querySelector('#menu_select').style.display = 'block';
-
-//   renderSelectedStoreList();
-// });
-
-// window.addEventListener('click', e => {
-//   if (!e.target.matches('.map-list')) return;
-
-//   document.querySelector('#store-detail').style.display = 'block';
-//   document.querySelector('#menu_select').style.display = 'none';
-
-//   renderSelectedStoreList();
-// });
-
-// window.addEventListener('click', e => {
-//   if (!e.target.matches('.remove-btn')) return;
-//   selectedStoreList = selectedStoreList.filter(store => store.id !== e.target.closest('li').id);
-
-//   renderSelectedStoreList();
-// });
-
-// window.addEventListener('click', async e => {
-//   if (!e.target.matches('.total-submit-btn')) return;
-
-//   e.preventDefault();
-
-//   // const user = localStorage.getItem('username');
-
-//   const uuid = await db.collection('votes').doc();
-
-//   uuid.set({
-//     stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList),
-//     owner: user,
-//     id: uuid.id,
-//   });
-
-//   db.collection('users').doc(user).collection('voteList').doc(uuid.id).set({});
-
-//   render(route(e));
-// });
 
 export { searchPlaces };

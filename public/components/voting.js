@@ -1,6 +1,6 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
-import appendKakaoApi from '../utils/kakaoapi.js';
+import render from '../utils/render.js';
 import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
@@ -25,23 +25,26 @@ const Voting = async params => {
     window.localStorage.setItem('voteList', JSON.stringify([...voteList, newVote]));
   }
 
-  const patchStoreVoteCount = async voteId => {
+  const updateSelectedStoreVoteCount = async voteId => {
     const selectedStore = [...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked).map($checkbox => $checkbox.id);
-    const newStores = voteItem.stores.map(store =>
-      selectedStore.includes(store.id) ? { ...store, countVote: store.countVote + 1 } : store
-    );
+    const newStores = voteItem.stores.map(store => selectedStore.includes(store.id) ? { ...store, countVote: store.countVote + 1 } : store)
     await db.collection('votes').doc(voteId).update({ stores: newStores });
   }
 
+  const routeHome = () => {
+    const HOME_PATH = '/'
+    render({ path: HOME_PATH });
+    window.history.pushState(null, null, HOME_PATH);
+  }
+  
   const handleCompleteVote = async e => {
     if (!e.target.matches('.end-voting')) return;
-
-    await patchStoreVoteCount(params)
+  
     addVoteList(params)
-
-    e.target.disabled = true;
-
-    document.querySelector('.voting').insertAdjacentHTML('beforebegin', '<div class="popup-endvote">투표 완료~</div>');
+    await updateSelectedStoreVoteCount(params)
+    
+    alert('투표가 완료되었습니다!');
+    routeHome()
   }
 
   const handleSingleVote = e => {
@@ -88,9 +91,9 @@ const Voting = async params => {
             .join('')}
         </div>
       </div>
-      <div id="map"></div>
+      <div id="map" ></div>
     </div>
-  `);
+  `)
 
 
   const endVote = () => 
@@ -100,14 +103,18 @@ const Voting = async params => {
       <div class="vote-complete-message">투표를 완료했습니다</div>
     </div>
     `)
-  
 
   const voteItem = await getVoteItem(params);
+             
+  kakao.maps.load(() => { marker(voteItem.stores) });
 
   window.addEventListener('click', handleCompleteVote);
-  window.addEventListener('click', handleSingleVote);
-             
-  kakao.maps.load( ()=> { marker(voteItem.stores)});
+  
+  window.addEventListener('click', e => {
+    if (!e.target.matches('.voting-btn')) return;
+
+    if (voteItem.voteType === '단일투표') selectOnlyOne(e.target);
+  });
 
   return isValidUser(params) ? domStr(voteItem) : endVote();
 };

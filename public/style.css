@@ -61,6 +61,7 @@
 
   --grey-color: #d1d1d1;
   --black-color: #090909;
+  --red-color: #ff0000;
   --page-title-height: 2rem;
 
   --item-title: 1.5rem;
@@ -98,7 +99,6 @@
 }
 html {
   font-family: 'Pretendard';
-  overflow: hidden;
 }
 body {
   margin: 0;
@@ -153,7 +153,12 @@ h1 {
   line-height: var(--page-title-height);
   display: flex;
 }
+.delete-vote:hover {
+  background: #d1d1d1;
+  border-radius: 100%;
+}
 .delete-vote {
+  font-size: var(--item-subtitle);
   float: right;
   background: none;
   border: none;
@@ -241,7 +246,8 @@ h1 {
 /*   login css start*/
 #login,
 #register,
-#add {
+#add,
+#welcome {
   background-color: var(--white-color);
   max-width: 400px;
   padding: 3rem;
@@ -251,6 +257,12 @@ h1 {
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+}
+#register [class*='error-'],
+#login [class*='error-'] {
+  color: var(--red-color);
+  font-size: var(--item-subdescription);
+  padding-top: var(--gap-02);
 }
 .signin-form,
 .signup-form {
@@ -272,9 +284,11 @@ h1 {
 .signin-form input,
 .signup-form input,
 .add-form input {
+  padding: var(--gap-02) var(--gap);
   height: var(--input-height);
   border-radius: 10px;
   border: 1px solid var(--grey-color);
+  box-sizing: border-box;
 }
 .signin-btn,
 .signup-btn {
@@ -514,6 +528,7 @@ h1 {
   top: var(--card-padding);
   right: var(--card-padding);
 }
+#welcome .login-btn,
 .vote-information .end-voting {
   font-size: var(--item-description);
   border: 0;
@@ -521,7 +536,7 @@ h1 {
   color: var(--white-color);
   margin-top: var(--gap);
   border-radius: var(--border-radius);
-  padding: var(--gap-02);
+  padding: var(--gap);
   top: var(--card-padding);
   right: var(--card-padding);
 }
@@ -559,7 +574,7 @@ h1 {
   font-weight: 800;
 }
 
-.map-sidebar button.map-home {
+.map-sidebar button.active {
   color: var(--primary-color);
 }
 .map-sidebar button.store-name {
@@ -620,12 +635,30 @@ nav a {
   border-radius: 5px;
 }
 /* pagination end */
-/* addVote start */
-.warning-message {
-  display: none;
-  color: var(--red-color);
-  font-size: var(--item-subdescription);
-  padding-top: var(--gap-02);
+.empty {
+  display: flex;
+  font-size: var(--item-title);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40vh;
+  background-color: white;
+}
+.empty-store {
+  font-size: var(--item-subtitle);
+}
+.vote-link {
+  background: none;
+  border: none;
+}
+.vote-link img {
+  height: var(--item-subtitle);
+}
+.copy-value {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  top: -9999px;
 }
 /* addVote end */
 /* voting start */
