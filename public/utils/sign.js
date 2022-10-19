@@ -24,6 +24,7 @@ const signinState = {
   get valid() {
     return Object.keys(this).every(k => k === 'valid' || this[k].valid);
   },
+  error: '이메일과 비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
 };
 
 const signupState = {
@@ -38,6 +39,7 @@ const signupState = {
   get valid() {
     return Object.keys(this).every(k => k === 'valid' || this[k].valid);
   },
+  error: '유효하지 않은 정보입니다. 다시 입력해주세요.',
 };
 
 let currentPage = 'signin';
@@ -124,8 +126,8 @@ const submit = async e => {
     }
   } catch (err) {
     console.error(err);
-    document.querySelector('.signin-form .error-message').textContent =
-      '이메일과 비밀번호가 일치하지 않습니다. 다시 입력해주세요.';
+    document.querySelector(`.${currentPage}-form .error-message`).textContent = currentState.error;
+    document.querySelector(`.${currentPage}-btn`).classList.remove('active');
   }
 };
 
