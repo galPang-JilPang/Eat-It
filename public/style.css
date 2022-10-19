@@ -666,11 +666,13 @@ nav a {
   font-size: var(--item-subtitle);
 }
 .vote-link {
-  background: none;
-  border: none;
-}
-.vote-link img {
-  height: var(--item-subtitle);
+  text-align: center;
+  background-color: var(--primary-color);
+  border-radius: 50px;
+  margin-top: 1rem;
+  box-sizing: border-box;
+  color: var(--white-color);
+  border: 0;
 }
 .copy-value {
   width: 1px;

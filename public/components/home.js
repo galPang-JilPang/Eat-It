@@ -50,7 +50,7 @@ const Home = async () => {
           <div class="vote-name">
             ${title}
             <input class="copy-value" value="${window.location.origin}${isVoting(deadline) ? `/voting/:${id}` : `/voted/:${id}`}"/>
-            <button class="vote-link"><img src="../src/link.png"/></button>
+            <button class="vote-link">링크공유</button>
           </div>
           <div class="vote-date">${deadline}</div>
           <div class="stores">
