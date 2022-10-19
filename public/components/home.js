@@ -77,12 +77,17 @@ const Home = async () => {
 const $root = document.getElementById('root');
 // 투표 목록 추가 버튼
 
-$root.addEventListener('click', e => {
+$root.addEventListener('click', async e => {
   if (e.target.closest('.add-vote')) render(route(e));
   if (e.target.matches('.more-vote')) render(route(e));
-  if (e.target.matches('.vote-link')) {
-    const input = e.target.closest('.vote-name').querySelector('.copy-value');
-    navigator.clipboard.writeText(input.value);
+  if (e.target.closest('.vote-link')) {
+    try {
+      const $input = e.target.closest('.vote-name').querySelector('.copy-value');
+      await navigator.clipboard.writeText($input.value);
+      alert('링크 복사가 완료되었습니다!');
+    } catch (err) {
+      console.error(err);
+    }
   }
 });
 
