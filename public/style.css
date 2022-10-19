@@ -245,6 +245,7 @@ h1 {
 /*   home css end*/
 
 /*   login css start*/
+
 #login,
 #register,
 #add,
@@ -300,6 +301,10 @@ h1 {
   margin-top: 1rem;
   box-sizing: border-box;
   color: var(--white-color);
+}
+.signin-btn.active,
+.signup-btn.active {
+  background-color: var(--primary-color);
 }
 .class-toggle {
   display: flex;

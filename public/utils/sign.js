@@ -35,6 +35,9 @@ const signupState = {
     },
     error: '패스워드가 일치하지 않습니다.',
   },
+  get valid() {
+    return Object.keys(this).every(k => k === 'valid' || this[k].valid);
+  },
 };
 
 let currentPage = 'signin';
@@ -60,9 +63,8 @@ const toggleNav = e => {
   render(route(e));
 };
 
-const activeButton = () => {
-  const $form = document.querySelector(`.${currentPage}-form`);
-  $form.querySelector('button').disabled = !signinState.valid;
+const activateButton = () => {
+  document.querySelector(`.${currentPage}-btn`).classList.toggle('active', currentState.valid);
 };
 
 const validate = _.debounce(e => {
@@ -82,7 +84,7 @@ const validate = _.debounce(e => {
         ? currentState['confirm-password'].error
         : '';
   }
-  // activeButton();
+  activateButton();
 }, 300);
 
 /* 로그인해야 접근할 수 있는 페이지에서 사용할 request */
