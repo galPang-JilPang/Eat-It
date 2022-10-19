@@ -85,7 +85,7 @@ const makeVoteList = params => {
         </button>
       </li>
       <li>
-      <a href="/home" class="total-submit-btn">투표 완료</a>
+      <a href="/home" class="total-submit-btn">투표 생성</a>
       </li>
     </ul>
 

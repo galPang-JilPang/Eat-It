@@ -6,9 +6,9 @@ import Nav from './nav.js';
 
 // prettier-ignore
 const Voting = async params => {
-  const isValidUser = voteId => {
+  const isValidUser = (voteId, owner) => {
     const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
-    return !voteList.includes(voteId);
+    return !voteList.includes(voteId) || owner === window.localStorage.getItem('username');
   };
   
   const getVoteItem = async id => {
@@ -41,6 +41,12 @@ const Voting = async params => {
   
   const handleCompleteVote = async e => {
     if (!e.target.matches('.end-voting')) return;
+
+
+    if ([...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked).map($checkbox => $checkbox.id).length === 0) {
+      alert("투표한 목록이 없습니다")
+      return;
+    }
   
     addVoteList(params)
     await updateSelectedStoreVoteCount(params)
@@ -52,6 +58,7 @@ const Voting = async params => {
   const selectOnlyOne = $input => {
     [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
       checkbox.checked = checkbox === $input;
+    checkbox.closest(".store-card").classList.toggle("selected-vote",checkbox.checked )
     });
   };
 
@@ -94,7 +101,6 @@ const Voting = async params => {
     </div>
   `)
 
-
   const endVote = () => 
     createElement(`
     ${Nav()}
@@ -102,6 +108,7 @@ const Voting = async params => {
       <div class="vote-complete-message">투표를 완료했습니다</div>
     </div>
     `)
+
 
   const voteItem = await getVoteItem(params);
           
@@ -127,9 +134,13 @@ const Voting = async params => {
   window.addEventListener('click', e => {
     if (!e.target.matches('.voting-btn')) return;
     if (voteItem.voteType === '단일투표') selectOnlyOne(e.target);
+    else e.target.closest(".store-card").classList.toggle("selected-vote");
+
+
+  
   });
 
-  return isValidUser(params) ? domStr(voteItem) : endVote();
+  return isValidUser(params, voteItem.owner) ? domStr(voteItem) : endVote();
 };
 
 export default Voting;
