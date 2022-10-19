@@ -1,15 +1,14 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import render from '../utils/render.js';
-// import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
 const Voting = async params => {
   const isOwner = owner => owner === window.localStorage.getItem('username');
 
-  const isValidUser = (voteId, owner) => {
+  const isVoted = voteId => {
     const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
-    return !voteList.includes(voteId) || isOwner(owner);
+    return voteList.includes(voteId);
   };
 
   const getVoteItem = async id => {
@@ -66,7 +65,7 @@ const Voting = async params => {
       checkbox.checked = checkbox === $input;
     });
   };
-
+  // prettier-ignore
   const domStr = voteItem =>
     createElement(`
       ${Nav()}
@@ -77,30 +76,29 @@ const Voting = async params => {
             <span href="/" class="voting-link">공유링크</span>
             <div class="voting-deadline">마감일 : ${voteItem.deadline}</div>
             <div class="voting-type">투표 방식 : ${voteItem.voteType}</div>
-            ${isOwner(voteItem.owner) ? '' : '<button class="end-voting">투표 완료</button>'}
+            ${isOwner(voteItem.owner) && isVoted(voteItem.id) ? '' : '<button class="end-voting">투표 완료</button>'}
           </div>
           
           <div class="voting-list">
             ${voteItem.stores
-              .map(
-                ({ id, title, description, thumbnails }) => `
+              .map(({ id, title, description, thumbnails }) => `
               <div class="store-card">
-              ${isOwner(voteItem.owner) ? '' : '<input type="checkbox" id="${id}" class="voting-btn" name="voting"/>'}
+              ${
+                isOwner(voteItem.owner) && isVoted(voteItem.id)
+                  ? ''
+                  : '<input type="checkbox" id="${id}" class="voting-btn" name="voting"/>'
+              }
               <div class="store-name">${title}</div>
               <div class="store-description">${description}</div>
               <div class="store-images">
-              ${thumbnails
-                .map(
-                  thumbnail => `
+              ${thumbnails.map(thumbnail => `
                 <div class="store-image" style="background-image:url(${thumbnail});background-size: contain;"></div>
                 `
-                )
-                .join('')}
+                ).join('')}
               </div>
             </div>
             `
-              )
-              .join('')}
+              ).join('')}
           </div>
         </div>
         <div id="kakao-map"></div>
@@ -130,7 +128,7 @@ const Voting = async params => {
     });
   });
 
-  return isValidUser(params, voteItem.owner) ? domStr(voteItem) : endVote();
+  return !isVoted(params) || isOwner(voteItem.owner) ? domStr(voteItem) : endVote();
 };
 
 export default Voting;
