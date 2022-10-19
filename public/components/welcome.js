@@ -5,10 +5,8 @@ import route from '../utils/route.js';
 const Welcome = () =>
   createElement(`
   <div id="welcome">
-    <p>축하합니다! 
-    </p>
-    <p>
-    가입이 완료되었습니다</p>
+  <p class="welcome-emoji">🎉</p>
+  <p class="welcome-message">가입이 완료되었습니다!</p>
     <a href="/login" class="login-btn">로그인 하기</a>
     </div>
 `);
