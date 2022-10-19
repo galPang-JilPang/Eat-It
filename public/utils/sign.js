@@ -22,7 +22,7 @@ const signinState = {
     error: '영문 또는 숫자를 6~12자 입력하세요.',
   },
   get valid() {
-    return Object.keys(this).every(k => k === 'valid' || this[k].valid);
+    return this.userid.valid && this.password.valid;
   },
   error: '이메일과 비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
 };
@@ -37,7 +37,7 @@ const signupState = {
     error: '패스워드가 일치하지 않습니다.',
   },
   get valid() {
-    return Object.keys(this).every(k => k === 'valid' || this[k].valid);
+    return this.userid.valid && this.password.valid && signupState['confirm-password'].valid;
   },
   error: '유효하지 않은 정보입니다. 다시 입력해주세요.',
 };
@@ -66,6 +66,7 @@ const toggleNav = e => {
 };
 
 const activateButton = () => {
+  console.log(currentPage, currentState);
   document.querySelector(`.${currentPage}-btn`).classList.toggle('active', currentState.valid);
 };
 
