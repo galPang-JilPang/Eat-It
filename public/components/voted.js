@@ -42,12 +42,12 @@ const Voted = async params => {
           </div>`).join('')}
         </div>
       </div>
-      <div id="map"></div>
+      <div id="kakao-map"></div>
     </div>`)
 
   const voteItem = await getVoteItem(params);
   const sortedStores = getSortedStores(voteItem.stores)
-  console.log(sortedStores);
+
   return domStr(sortedStores)
 };
 

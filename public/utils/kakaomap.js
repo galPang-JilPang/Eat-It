@@ -1,6 +1,3 @@
-import render from '../index.js';
-import route from './route.js';
-import { db } from '../utils/firebase.js';
 import fetchImage from './fetchimage.js';
 
 var markers = [];
@@ -119,7 +116,6 @@ function searchPlaces() {
       level: 3,
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
-
     var ps = new kakao.maps.services.Places();
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -142,6 +138,7 @@ function searchPlaces() {
       }
     });
   });
+  return;
 }
 
 function getListItem(index, places) {

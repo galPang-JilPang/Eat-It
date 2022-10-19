@@ -1,7 +1,7 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import render from '../utils/render.js';
-import marker from '../utils/marker.js';
+// import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
 const Voting = async params => {
@@ -18,6 +18,8 @@ const Voting = async params => {
     doc.forEach(docs => {
       voteItem = docs.data();
     });
+    kakao.setMap.marker(voteItem.stores);
+
     return voteItem;
   };
 
@@ -101,9 +103,10 @@ const Voting = async params => {
               .join('')}
           </div>
         </div>
-        <div id="map"></div>
+        <div id="kakao-map"></div>
       </div>
-    `);
+    </div>
+  `);
 
   const endVote = () =>
     createElement(`
@@ -114,10 +117,6 @@ const Voting = async params => {
   `);
 
   const voteItem = await getVoteItem(params);
-
-  kakao.maps.load(() => {
-    marker(voteItem.stores);
-  });
 
   window.addEventListener('click', handleCompleteVote);
 

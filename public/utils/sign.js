@@ -66,7 +66,6 @@ const toggleNav = e => {
 };
 
 const activateButton = () => {
-  console.log(currentPage, currentState);
   document.querySelector(`.${currentPage}-btn`).classList.toggle('active', currentState.valid);
 };
 
