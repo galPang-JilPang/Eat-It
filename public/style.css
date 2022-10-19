@@ -689,6 +689,13 @@ nav a {
 }
 /* addVote end */
 /* voting start */
+.selected-vote {
+  border: 3px solid var(--primary-color);
+}
+.selected-vote {
+  border: 3px solid var(--primary-color);
+}
+
 .vote-complete {
   display: flex;
   align-items: center;
