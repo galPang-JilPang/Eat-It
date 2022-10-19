@@ -245,7 +245,10 @@ h1 {
 /*   home css end*/
 
 /*   login css start*/
-
+.auth-wrapper {
+  height: 100vh;
+  background: url(../src/background.svg) center center;
+}
 #login,
 #register,
 #add,

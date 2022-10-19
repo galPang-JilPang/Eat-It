@@ -6,9 +6,9 @@ import Nav from './nav.js';
 
 // prettier-ignore
 const Voting = async params => {
-  const isValidUser = voteId => {
+  const isValidUser = (voteId, owner) => {
     const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
-    return !voteList.includes(voteId);
+    return !voteList.includes(voteId) || owner === window.localStorage.getItem('username');
   };
   
   const getVoteItem = async id => {
@@ -95,10 +95,9 @@ const Voting = async params => {
             .join('')}
         </div>
       </div>
-      <div id="map" ></div>
+      <div id="map"></div>
     </div>
   `)
-
 
   const endVote = () => 
     createElement(`
@@ -110,7 +109,7 @@ const Voting = async params => {
 
 
   const voteItem = await getVoteItem(params);
-             
+  
   kakao.maps.load(() => { marker(voteItem.stores) });
 
   window.addEventListener('click', handleCompleteVote);
@@ -126,7 +125,7 @@ const Voting = async params => {
   
   });
 
-  return isValidUser(params) ? domStr(voteItem) : endVote();
+  return isValidUser(params, voteItem.owner) ? domStr(voteItem) : endVote();
 };
 
 export default Voting;
