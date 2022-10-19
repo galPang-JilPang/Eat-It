@@ -4,10 +4,10 @@ import { db } from '../utils/firebase.js';
 import route from '../utils/route.js';
 import Nav from './nav.js';
 
-const uuid = await db.collection('votes').doc();
+let uuid = await db.collection('votes').doc();
 
 const Add = async () => {
-
+  
   const domStr = () =>
     createElement(`
     ${Nav()}
@@ -66,12 +66,14 @@ $root.addEventListener('click', async e => {
   });
 
   db.collection('users').doc(user).collection('voteList').doc(uuid.id).set({});
+  uuid = await db.collection('votes').doc();
 
   render(route(e));
 });
 
 $root.addEventListener('click', e => {
   if (!e.target.matches('.close')) return;
+
   render(route(e));
 });
 
