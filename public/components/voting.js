@@ -1,7 +1,7 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
 import render from '../utils/render.js';
-import marker from '../utils/marker.js';
+// import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
 // prettier-ignore
@@ -17,6 +17,8 @@ const Voting = async params => {
     doc.forEach(docs => {
       voteItem = docs.data();
     });
+    kakao.setMap.marker(voteItem.stores)
+   
     return voteItem;
   };
 
@@ -95,7 +97,7 @@ const Voting = async params => {
             .join('')}
         </div>
       </div>
-      <div id="map"></div>
+      <div id="kakao-map"></div>
     </div>
   `)
 
@@ -109,15 +111,28 @@ const Voting = async params => {
 
 
   const voteItem = await getVoteItem(params);
+          
   
-  kakao.maps.load(() => { marker(voteItem.stores) });
+  // if (!window.kakao) {
+
+                // console.log(kakao.maps.load(()=>{
+                //   console.log(document.querySelector('#kakao-map'));
+                  
+                //   console.log(kakao.setMap.insert(document.querySelector('#kakao-map')))}))
+    // window.addEventListener('load', () => {
+    //   console.log(document.querySelector('#kakao-map'))
+    //   kakao.maps.load(() => {
+    //     kakao.setMap.insert(document.querySelector('#kakao-map'));
+    //   });
+    // });
+  // }     
+  // kakao.maps.load(() => { marker(voteItem.stores) });
+
 
   window.addEventListener('click', handleCompleteVote);
   
   window.addEventListener('click', e => {
     if (!e.target.matches('.voting-btn')) return;
-
-    
     if (voteItem.voteType === '단일투표') selectOnlyOne(e.target);
     else e.target.closest(".store-card").classList.toggle("selected-vote");
 

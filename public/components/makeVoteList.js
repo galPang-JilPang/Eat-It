@@ -1,25 +1,17 @@
 import createElement from '../utils/createElement.js';
 import { db } from '../utils/firebase.js';
-import { searchPlaces } from '../utils/kakaomap.js';
 import route from '../utils/route.js';
 import render from '../utils/render.js';
 import renderSelectedStoreList from './renderSelectedStoreList.js';
-import appendKakaoApi from '../utils/kakaoapi.js';
 
 const makeVoteList = params => {
   let selectedStoreList = [];
 
-  if (window.kakao) searchPlaces();
-  else {
-    window.addEventListener('load', () => {
-      searchPlaces();
-    });
-  }
-
   window.addEventListener('submit', e => {
     if (!e.target.matches('#store-keyword')) return;
     e.preventDefault();
-    searchPlaces();
+
+    kakao.setMap.search(e.target.querySelector('#keyword').value);
   });
 
   window.addEventListener('click', async e => {
@@ -79,8 +71,7 @@ const makeVoteList = params => {
       render(route(e));
     }
   });
-
-  return createElement(`
+  const voteList = createElement(`
     <div class="map_wrap">
     <ul class="map-sidebar">
       <li>
@@ -97,7 +88,7 @@ const makeVoteList = params => {
       <a href="/home" class="total-submit-btn">투표 생성</a>
       </li>
     </ul>
-        <div id="map" ></div>
+
         <div id="menu_wrap" style="display: flex">
           <div id="menu_select" class="bg_white">
             <div class="option">
@@ -117,8 +108,21 @@ const makeVoteList = params => {
         <div id="menu_voted" style="display:none;">
           투표할 음식점이 없습니다. 음식점을 추가해주세요.
         </div>
+        <div id="kakao-map" ></div>
       </div>
+
 `);
+
+  if (!window.kakao) {
+    window.addEventListener('load', () => {
+      kakao.maps.load(() => {
+        kakao.setMap.insert(document.querySelector('#kakao-map'));
+        kakao.setMap.search('이태원 맛집');
+      });
+    });
+  }
+
+  return voteList;
 };
 
 export default makeVoteList;

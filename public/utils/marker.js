@@ -18,10 +18,7 @@ function marker(stores) {
       map: map,
       position: positions[i].latlng,
     });
-    // var mLabel = new kakao.maps.InfoWindow({
-    //   position: positions[i].latlng,
-    // });
-    // mLabel.open(map, marker);
+
     var customOverlay = new kakao.maps.CustomOverlay({
       position: positions[i].latlng,
       content: `<div style="    border: 1px solid #292929;padding:0.5rem;background:white;margin-bottom:150px;">${positions[i].title}</div>`,

@@ -1,17 +1,19 @@
 import render from './utils/render.js';
-import appendKakaoApi from './utils/kakaoapi.js';
-appendKakaoApi();
+import loadMap from './utils/loadMap.js';
+
 window.addEventListener('popstate', () => {
   console.log('[popstate]', window.location.pathname);
   const [path, params] = window.location.pathname.split('/:');
-  console.log(path, params);
+
   render({ path, params });
 });
-
+loadMap();
 window.addEventListener('DOMContentLoaded', () => {
   const [path, params] = window.location.pathname.split('/:');
-
   render({ path, params });
 });
 
+window.addEventListener('popstate', () => {
+  console.log('pushState');
+});
 export default render;
