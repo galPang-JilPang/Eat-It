@@ -4,13 +4,14 @@ import render from '../utils/render.js';
 import marker from '../utils/marker.js';
 import Nav from './nav.js';
 
-// prettier-ignore
 const Voting = async params => {
+  const isOwner = owner => owner === window.localStorage.getItem('username');
+
   const isValidUser = (voteId, owner) => {
     const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
-    return !voteList.includes(voteId) || owner === window.localStorage.getItem('username');
+    return !voteList.includes(voteId) || isOwner(owner);
   };
-  
+
   const getVoteItem = async id => {
     const doc = await db.collection('votes').where('id', '==', id).get();
     let voteItem = {};
@@ -23,106 +24,111 @@ const Voting = async params => {
   const addVoteList = newVote => {
     const voteList = JSON.parse(window.localStorage.getItem('voteList')) ?? [];
     window.localStorage.setItem('voteList', JSON.stringify([...voteList, newVote]));
-  }
+  };
 
   const updateSelectedStoreVoteCount = async voteId => {
-    const selectedStore = [...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked).map($checkbox => $checkbox.id);
-    const newStores = voteItem.stores.map(store => selectedStore.includes(store.id) ? { ...store, countVote: store.countVote + 1 } : store)
-    await db.collection('votes').doc(voteId).update({ stores: newStores });
-  }
+    const selectedStoreList = [...document.querySelectorAll('.voting-btn')]
+      .filter($checkbox => $checkbox.checked)
+      .map($checkbox => $checkbox.id);
+    const newStoreList = voteItem.stores.map(store =>
+      selectedStoreList.includes(store.id) ? { ...store, countVote: store.countVote + 1 } : store
+    );
+    await db.collection('votes').doc(voteId).update({ stores: newStoreList });
+  };
 
   const routeHome = () => {
-    const HOME_PATH = '/'
+    const HOME_PATH = '/';
     render({ path: HOME_PATH });
     window.history.pushState(null, null, HOME_PATH);
-  }
-  
+  };
+
   const handleCompleteVote = async e => {
     if (!e.target.matches('.end-voting')) return;
 
-
-    if ([...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked).map($checkbox => $checkbox.id).length === 0) {
-      alert("투표한 목록이 없습니다")
+    const selectedStoreList = [...document.querySelectorAll('.voting-btn')].filter($checkbox => $checkbox.checked);
+    if (selectedStoreList.length === 0) {
+      alert('투표한 목록이 없습니다');
       return;
     }
-  
-    addVoteList(params)
-    await updateSelectedStoreVoteCount(params)
-    
+
+    addVoteList(params);
+    await updateSelectedStoreVoteCount(params);
+
     alert('투표가 완료되었습니다!');
-    routeHome()
-  }
+
+    routeHome();
+  };
 
   const selectOnlyOne = $input => {
     [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
       checkbox.checked = checkbox === $input;
-    checkbox.closest(".store-card").classList.toggle("selected-vote",checkbox.checked )
     });
   };
 
-
   const domStr = voteItem =>
     createElement(`
-    ${Nav()}
-    <div class="voting">
-      <div class="voting-container">
-        <div class="vote-information">
-          <span class="vote-name">${voteItem.title}</span>
-          <span href="/" class="voting-link">공유링크</span>
-          <div class="voting-deadline">마감일 : ${voteItem.deadline}</div>
-          <div class="voting-type">투표 방식 : ${voteItem.voteType}</div>
-          <button class="end-voting">투표 완료</button>
-        </div>
-        
-        <div class="voting-list">
-          ${voteItem.stores
-            .map(
-              ({ id, title, description, thumbnails }) => `
-            <div class="store-card">
-            <input type="checkbox" id="${id}" class="voting-btn" name="voting"/>
-            <div class="store-name">${title}</div>
-            <div class="store-description">${description}</div>
-            <div class="store-images">
-            ${thumbnails
+      ${Nav()}
+      <div class="voting">
+        <div class="voting-container">
+          <div class="vote-information">
+            <span class="vote-name">${voteItem.title}</span>
+            <span href="/" class="voting-link">공유링크</span>
+            <div class="voting-deadline">마감일 : ${voteItem.deadline}</div>
+            <div class="voting-type">투표 방식 : ${voteItem.voteType}</div>
+            ${isOwner(voteItem.owner) ? '' : '<button class="end-voting">투표 완료</button>'}
+          </div>
+          
+          <div class="voting-list">
+            ${voteItem.stores
               .map(
-                thumbnail =>
-                  `<div class="store-image" style="background-image:url(${thumbnail});background-size: contain;"></div>`
+                ({ id, title, description, thumbnails }) => `
+              <div class="store-card">
+              ${isOwner(voteItem.owner) ? '' : '<input type="checkbox" id="${id}" class="voting-btn" name="voting"/>'}
+              <div class="store-name">${title}</div>
+              <div class="store-description">${description}</div>
+              <div class="store-images">
+              ${thumbnails
+                .map(
+                  thumbnail => `
+                <div class="store-image" style="background-image:url(${thumbnail});background-size: contain;"></div>
+                `
+                )
+                .join('')}
+              </div>
+            </div>
+            `
               )
               .join('')}
-            </div>
-          </div>`
-            )
-            .join('')}
+          </div>
         </div>
+        <div id="map"></div>
       </div>
-      <div id="map"></div>
-    </div>
-  `)
+    `);
 
-  const endVote = () => 
+  const endVote = () =>
     createElement(`
     ${Nav()}
     <div class="vote-complete">
       <div class="vote-complete-message">투표를 완료했습니다</div>
     </div>
-    `)
-
+  `);
 
   const voteItem = await getVoteItem(params);
-  
-  kakao.maps.load(() => { marker(voteItem.stores) });
+
+  kakao.maps.load(() => {
+    marker(voteItem.stores);
+  });
 
   window.addEventListener('click', handleCompleteVote);
-  
+
   window.addEventListener('click', e => {
     if (!e.target.matches('.voting-btn')) return;
 
-    
     if (voteItem.voteType === '단일투표') selectOnlyOne(e.target);
-    else e.target.closest(".store-card").classList.toggle("selected-vote");
 
-
-  
+    [...document.querySelectorAll('.voting-btn')].forEach(checkbox => {
+      checkbox.closest('.store-card').classList.toggle('selected-vote', checkbox.checked);
+    });
   });
 
   return isValidUser(params, voteItem.owner) ? domStr(voteItem) : endVote();
