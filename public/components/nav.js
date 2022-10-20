@@ -5,10 +5,12 @@ import { logout, logoutExpress } from '../utils/sign.js';
 const Nav = () => {
   return window.localStorage.getItem('username')
     ? `<nav>
+      <div class="nav-wrapper">
+      <a href="/"><img class="logo-img" src="../src/logo.png"></a>
       <ul>
-        <li><a href="/">투표 목록</a></li>
+        <li class="pconly"><a href="/">투표 목록</a></li>
         <li><a href="/add">투표 추가</a></li>
-        <li class="user">${localStorage.getItem('username')}</li>
+        <li class="user">${localStorage.getItem('username').split('@')[0]}님</li>
         ${
           localStorage.getItem('username')
             ? `<li class="logout">
@@ -17,9 +19,17 @@ const Nav = () => {
             : ''
         }
       </ul>
+      </div>
     </nav>
   `
-    : `<nav>방문자 투표입니다</nav>`;
+    : `<nav>
+    <div class="nav-wrapper">
+    <a href="/"><img class="logo-img" src="../src/logo.png"></a>
+    <ul>
+      <li><a href="/add">새로운 투표 만들기</a></li>
+    </ul>
+    </div>
+  </nav>`;
 };
 
 window.addEventListener('click', e => {

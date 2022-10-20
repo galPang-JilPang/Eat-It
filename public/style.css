@@ -97,6 +97,8 @@
   --map-add-width: 4rem;
 
   --pagination-height: 1.1rem;
+
+  --pc-max-width: 980px;
 }
 html {
   font-family: 'Pretendard';
@@ -142,11 +144,21 @@ h1 {
 .hidden {
   display: none;
 }
+
 /*   home css start*/
 #home {
-  max-width: 980px;
+  max-width: var(--pc-max-width);
   margin: auto;
+  width: 95%;
 }
+.logo-img {
+  height: var(--nav-height);
+  padding-top: var(--gap);
+  padding-bottom: var(--gap);
+  box-sizing: border-box;
+  padding-left: var(--gap-1);
+}
+
 .member-title {
   padding-top: var(--content-padding-top);
   padding-bottom: var(--content-padding-bottom);
@@ -438,6 +450,7 @@ h1 {
   width: 100vw;
   height: 100vh;
   display: flex;
+  overflow: hidden;
 }
 #menu_wrap,
 #menu_voted {
@@ -455,7 +468,6 @@ h1 {
 }
 
 #menu_voted {
-  width: var(--menu-width);
   padding-top: var(--gap);
 }
 .vote-information {
@@ -472,10 +484,12 @@ h1 {
   display: flex;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 .voting-container {
   overflow-y: scroll;
-  padding-top: calc(var(--nav-height) + 2rem);
+  padding-top: calc(var(--nav-height));
   z-index: 1;
   background: var(--white-color);
 }
@@ -640,16 +654,22 @@ h1 {
 
 /*   nav css end*/
 nav {
-  display: flex;
-  align-items: center;
-  justify-content: end;
+  width: 100%;
   background-color: var(--white-color);
   height: var(--nav-height);
-  width: 100%;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+  display: flex;
+  place-content: center;
   position: fixed;
   top: 0px;
   z-index: 2;
+}
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
 }
 nav ul {
   display: flex;
@@ -739,9 +759,12 @@ nav a {
   .vote-list-container .card {
     width: calc(50% - 0.5rem);
   }
+  .pconly {
+    display: none;
+  }
 }
 @media (max-width: 650px) {
   .vote-list-container .card {
-    width: calc(100% - 0.5rem);
+    width: calc(100%);
   }
 }
