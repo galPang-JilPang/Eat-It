@@ -36,7 +36,7 @@ const render = async url => {
 
     if (window.kakao && document.querySelector('#root .map_wrap #kakao-map')) {
       kakao.setMap.insert(document.querySelector('#root #kakao-map'));
-      kakao.setMap.search('이태원 맛집');
+      kakao.setMap.search('강남역 맛집');
     } else if (window.kakao && document.querySelector('#root .voting #kakao-map')) {
       kakao.setMap.insert(document.querySelector('#root #kakao-map'));
     }

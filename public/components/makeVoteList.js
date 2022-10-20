@@ -75,7 +75,14 @@ const makeVoteList = params => {
       }
     }
   });
-
+  if (!window.kakao) {
+    window.addEventListener('load', () => {
+      kakao.maps.load(() => {
+        kakao.setMap.insert(document.querySelector('#kakao-map'));
+        kakao.setMap.search('이태원 맛집');
+      });
+    });
+  }
   return createElement(`
     <div class="map_wrap">
       <ul class="map-sidebar">
