@@ -13,7 +13,4 @@ window.addEventListener('DOMContentLoaded', () => {
   render({ path, params });
 });
 
-window.addEventListener('popstate', () => {
-  console.log('pushState');
-});
 export default render;

@@ -66,63 +66,44 @@ const makeVoteList = params => {
         return;
       }
 
-      const voteItem = await db.collection('votes').doc(params);
-      voteItem.update({ stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList) });
-      render(route(e));
+      try {
+        const voteItem = await db.collection('votes').doc(params);
+        await voteItem.update({ stores: firebase.firestore.FieldValue.arrayUnion(...selectedStoreList) });
+        render(route(e));
+      } catch (err) {
+        console.error(err);
+      }
     }
   });
-  const voteList = createElement(`
+
+  return createElement(`
     <div class="map_wrap">
-    <ul class="map-sidebar">
-      <li>
-        <button class="map-home active">
-          지도 홈
-        </button>
-      </li>
-      <li>
-        <button class="map-list">
-          투표 목록
-        </button>
-      </li>
-      <li>
-      <a href="/home" class="total-submit-btn">투표 생성</a>
-      </li>
-    </ul>
-
-        <div id="menu_wrap" style="display: flex">
-          <div id="menu_select" class="bg_white">
-            <div class="option">
-              <div>
-                <form id="store-keyword">
-                  <input type="text" id="keyword" size="15" value="강남역 맛집"/>
-                  <button type="submit"></button>
-                </form>
-              </div>
+      <ul class="map-sidebar">
+        <li><button class="map-home active">지도 홈</button></li>
+        <li><button class="map-list">투표 목록</button></li>
+        <li><a href="/home" class="total-submit-btn">투표 생성</a></li>
+      </ul>
+      <div id="menu_wrap" style="display: flex">
+        <div id="menu_select" class="bg_white">
+          <div class="option">
+            <div>
+              <form id="store-keyword">
+                <input type="text" id="keyword" size="15" value="강남역 맛집"/>
+                <button type="submit"></button>
+              </form>
             </div>
-
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
           </div>
-          <div id="store-detail"></div>
+          <ul id="placesList"></ul>
+          <div id="pagination"></div>
         </div>
-        <div id="menu_voted" style="display:none;">
-          투표할 음식점이 없습니다. 음식점을 추가해주세요.
-        </div>
-        <div id="kakao-map" ></div>
+        <div id="store-detail"></div>
       </div>
-
-`);
-
-  if (!window.kakao) {
-    window.addEventListener('load', () => {
-      kakao.maps.load(() => {
-        kakao.setMap.insert(document.querySelector('#kakao-map'));
-        kakao.setMap.search('이태원 맛집');
-      });
-    });
-  }
-
-  return voteList;
+      <div id="menu_voted" style="display:none;">
+        투표할 음식점이 없습니다. 음식점을 추가해주세요.
+      </div>
+      <div id="kakao-map" ></div>
+    </div>
+  `);
 };
 
 export default makeVoteList;

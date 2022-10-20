@@ -33,7 +33,7 @@ const render = async url => {
     }
     const component = routes.find(route => route.path === _path)?.component || NotFound;
     $root.replaceChildren(await component(params));
-    console.log(1);
+
     if (window.kakao && document.querySelector('#root .map_wrap #kakao-map')) {
       kakao.setMap.insert(document.querySelector('#root #kakao-map'));
       kakao.setMap.search('이태원 맛집');

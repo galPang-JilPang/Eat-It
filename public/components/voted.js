@@ -47,7 +47,7 @@ const Voted = async params => {
 
   const voteItem = await getVoteItem(params);
   const sortedStores = getSortedStores(voteItem.stores)
-  console.log(sortedStores);
+
   return domStr(sortedStores)
 };
 

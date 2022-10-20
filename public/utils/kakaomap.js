@@ -116,7 +116,6 @@ function searchPlaces() {
       level: 3,
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
-    console.log(map);
     var ps = new kakao.maps.services.Places();
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     new kakao.maps.InfoWindow({ zIndex: 1 });
