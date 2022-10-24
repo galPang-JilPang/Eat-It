@@ -1,8 +1,9 @@
-import createElement from '../utils/createElement.js';
-import route from '../utils/route.js';
-import render from '../utils/render.js';
-import { db } from '../utils/firebase.js';
-import Nav from './nav.js';
+import createElement from "../utils/createElement.js";
+import route from "../utils/route.js";
+import render from "../utils/render.js";
+import { db } from "../utils/firebase.js";
+
+import Nav from "./nav.js";
 
 const Home = async () => {
   const homeBody = createElement(`
@@ -10,20 +11,24 @@ const Home = async () => {
     <div id="home"></div>
   `);
 
-  const loginedEmail = localStorage.getItem('username');
-  const username = loginedEmail.split('@')[0];
+  const loginedEmail = localStorage.getItem("username");
+  const username = loginedEmail.split("@")[0];
 
   const getUserVoteList = async () => {
-    const docs = await db.collection('votes').orderBy('timestamp', 'desc').where('owner', '==', loginedEmail).get();
+    const docs = await db
+      .collection("votes")
+      .orderBy("timestamp", "desc")
+      .where("owner", "==", loginedEmail)
+      .get();
 
     let vote = [];
-    docs.forEach(doc => {
+    docs.forEach((doc) => {
       vote = [...vote, doc.data()];
     });
     return vote;
   };
 
-  const isVoting = deadline => {
+  const isVoting = (deadline) => {
     const date = new Date().getTime();
     const voteDate = new Date(deadline).getTime();
 
@@ -50,7 +55,10 @@ const Home = async () => {
           <div class="vote-name">
             ${title}
             <input class="copy-value" value="${window.location.origin}${isVoting(deadline) ? `/voting/:${id}` : `/voted/:${id}`}"/>
+            <div class="button-nav">
             <button class="vote-link">링크공유</button>
+            <button class="qr-link">QR</button>
+            </div>
           </div>
           <div class="vote-date">${deadline}</div>
           <div class="stores">
@@ -64,42 +72,57 @@ const Home = async () => {
       `}).join('')}
     </div>
     </div>
+    <div id="qr"></div>
     `;
 
   const voteItems = await getUserVoteList();
   const voteList = fetchUserVoteList(voteItems);
   const voteListElement = createElement(voteList);
 
-  homeBody.getElementById('home').append(voteListElement);
+  homeBody.getElementById("home").append(voteListElement);
   return homeBody;
 };
 
-const $root = document.getElementById('root');
+const $root = document.getElementById("root");
 // 투표 목록 추가 버튼
 
-$root.addEventListener('click', async e => {
-  if (e.target.closest('.add-vote')) render(route(e));
-  if (e.target.matches('.more-vote')) render(route(e));
-  if (e.target.closest('.vote-link')) {
-    try {
-      const $input = e.target.closest('.vote-name').querySelector('.copy-value');
-      await navigator.clipboard.writeText($input.value);
-      alert('링크 복사가 완료되었습니다!');
-    } catch (err) {
-      console.error(err);
-    }
+$root.addEventListener("click", (e) => {
+  if (e.target.closest(".qr-link")) {
+    const qrElement = document.querySelector("#qr");
+
+    qrElement.classList.add("active");
+    var qrInstance = new QRCode("qr");
+
+    qrInstance.makeCode(
+      e.target.closest(".vote-name").querySelector(".copy-value").value
+    );
+  }
+  if (e.target.matches("#qr")) {
+    document.getElementById("qr").classList.remove("active");
+    document.getElementById("qr").innerHTML = ``;
+  }
+  if (e.target.closest(".add-vote")) render(route(e));
+  if (e.target.matches(".more-vote")) render(route(e));
+  if (e.target.closest(".vote-link")) {
+    const $input = e.target.closest(".vote-name").querySelector(".copy-value");
+    navigator.clipboard.writeText($input.value);
+    alert("링크 복사가 완료되었습니다!");
   }
 });
 
 // 투표 삭제
-$root.addEventListener('click', async e => {
-  if (!e.target.matches('.delete-vote')) return;
+$root.addEventListener("click", async (e) => {
+  if (!e.target.matches(".delete-vote")) return;
 
-  const loginedEmail = localStorage.getItem('username');
-  const targetId = e.target.closest('.card').id;
+  const loginedEmail = localStorage.getItem("username");
+  const targetId = e.target.closest(".card").id;
 
-  db.collection('votes').doc(targetId).delete();
-  db.collection('users').doc(loginedEmail).collection('voteList').doc(targetId).delete();
+  db.collection("votes").doc(targetId).delete();
+  db.collection("users")
+    .doc(loginedEmail)
+    .collection("voteList")
+    .doc(targetId)
+    .delete();
 
   render();
 });

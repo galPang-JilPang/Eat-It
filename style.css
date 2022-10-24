@@ -1,56 +1,56 @@
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 100;
-  src: url(/src/font/Pretendard-Thin.otf) format('otf');
+  src: url(/src/font/Pretendard-Thin.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 200;
-  src: url(/src/font/Pretendard-ExtraLight.otf) format('otf');
+  src: url(/src/font/Pretendard-ExtraLight.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 300;
-  src: url(/src/font/Pretendard-Light.otf) format('otf');
+  src: url(/src/font/Pretendard-Light.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 400;
-  src: url(/src/font/Pretendard-Regular.otf) format('otf');
+  src: url(/src/font/Pretendard-Regular.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 500;
-  src: url(/src/font/Pretendard-Medium.otf) format('otf');
+  src: url(/src/font/Pretendard-Medium.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 600;
-  src: url(/src/font/Pretendard-SemiBold.otf) format('otf');
+  src: url(/src/font/Pretendard-SemiBold.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 700;
-  src: url(/src/font/Pretendard-ExtraBold.otf) format('otf');
+  src: url(/src/font/Pretendard-ExtraBold.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 800;
-  src: url(/src/font/Pretendard-ExtraBold.otf) format('otf');
+  src: url(/src/font/Pretendard-ExtraBold.otf) format("otf");
 }
 @font-face {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 
   font-weight: 900;
-  src: url(/src/font/Pretendard-Black.otf) format('otf');
+  src: url(/src/font/Pretendard-Black.otf) format("otf");
 }
 :root {
   --primary-color: #ff570f;
@@ -101,7 +101,7 @@
   --pc-max-width: 980px;
 }
 html {
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
 }
 body {
   margin: 0;
@@ -215,7 +215,7 @@ h1 {
 }
 .stores::before,
 .stores::after {
-  content: '';
+  content: "";
   width: 100%;
   height: 1px;
 
@@ -276,8 +276,8 @@ h1 {
   transform: translate3d(-50%, -50%, 0);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
 }
-#register [class*='error-'],
-#login [class*='error-'] {
+#register [class*="error-"],
+#login [class*="error-"] {
   color: var(--red-color);
   font-size: var(--item-subdescription);
   padding-top: var(--gap-02);
@@ -391,8 +391,8 @@ h1 {
   box-sizing: border-box;
 }
 
-.add-form input[type='date' i],
-.add-form input[type='text' i] {
+.add-form input[type="date" i],
+.add-form input[type="text" i] {
   color: #999;
   padding-left: 1rem;
 }
@@ -561,7 +561,7 @@ h1 {
 #placesList {
   margin-top: var(--gap);
 }
-#placesList [class*='item-'],
+#placesList [class*="item-"],
 #menu_voted li,
 .store-card {
   position: relative;
@@ -604,7 +604,9 @@ h1 {
 }
 #store-detail {
   position: fixed;
-  left: calc(var(--map-sidebar-width) + var(--menu-width) + var(--map-sidebar-margin));
+  left: calc(
+    var(--map-sidebar-width) + var(--menu-width) + var(--map-sidebar-margin)
+  );
 }
 #store-detail iframe {
   width: 340px;
@@ -713,11 +715,43 @@ nav a {
 .empty-store {
   font-size: var(--item-subtitle);
 }
-.vote-link {
+.button-nav {
+  display: flex;
+  gap: var(--gap);
+}
+#qr.active {
+  width: 50vmin;
+  height: 50vmin;
+  position: fixed;
+  top: 50%;
+  z-index: 5;
+  background-color: var(--white-color);
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+#qr.active::before {
+  content: "⨉";
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 2rem;
+}
+#qr img {
+  display: block;
+  width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  border: 50px;
+  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+}
+.vote-link,
+.qr-link {
   text-align: center;
   background-color: var(--primary-color);
   border-radius: 50px;
-  margin-top: 1rem;
+
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
   box-sizing: border-box;
   color: var(--white-color);
   border: 0;
@@ -756,11 +790,46 @@ nav a {
 }
 /* voting end */
 @media (max-width: 800px) {
+  #login,
+  #register,
+  #add,
+  #welcome {
+    width: 90%;
+  }
+  .member-title {
+    padding-top: calc(var(--nav-height) + 3rem);
+  }
+  :root {
+    --nav-height: 3.5rem;
+  }
   .vote-list-container .card {
     width: calc(50% - 0.5rem);
   }
   .pconly {
     display: none;
+  }
+  .voting #kakao-map {
+    width: 100%;
+  }
+  .voting-container {
+    position: fixed;
+    top: 40%;
+    height: 40%;
+    width: 100%;
+    padding-top: var(--gap-1);
+    padding-bottom: var(--gap-1);
+    box-sizing: border-box;
+    transform: translate3d(0px, 50%, 0px);
+  }
+  #menu_select,
+  .voting-list {
+    width: 90%;
+    margin: auto;
+  }
+  #placesList [class*="item-"],
+  #menu_voted li,
+  .store-card {
+    margin-right: 0;
   }
 }
 @media (max-width: 650px) {

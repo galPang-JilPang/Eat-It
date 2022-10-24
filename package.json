@@ -1,52 +1,20 @@
 {
-  "name": "eat-it",
+  "name": "netlify-functions-express",
   "version": "1.0.0",
-  "description": "🍽뭐먹을끼니",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build": "babel public -w -d dist"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/galPang-JilPang/Eat-It.git"
+    "url": "git+https://github.com/codevilot/netlify-functions-express.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/galPang-JilPang/Eat-It/issues"
+    "url": "https://github.com/codevilot/netlify-functions-express/issues"
   },
-  "homepage": "https://galPang-JilPang.github.io//Eat-It",
-  "dependencies": {
-    "axios": "^1.1.2",
-    "cookie-parser": "^1.4.6",
-    "express": "^4.18.2",
-    "firebase": "^9.12.0",
-    "gh-pages": "^4.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "webpack": "^5.74.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/preset-env": "^7.19.4",
-    "eslint": "^8.25.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-html": "^7.1.0",
-    "eslint-plugin-import": "^2.26.0",
-    "nodemon": "^2.0.20",
-    "prettier": "2.7.1"
-  },
-  "presets": [
-    "@babel/preset-env"
-  ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties"
-  ]
+  "homepage": "https://codevilot.github.io/netlify-functions-express#readme"
 }
