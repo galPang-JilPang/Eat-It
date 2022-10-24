@@ -1,5 +1,5 @@
-import applyDiff from "./applyDiff.js";
-import eventHolder from "./eventHolder.js";
+import applyDiff from './applyDiff.js';
+import eventHolder from './eventHolder.js';
 
 // re-rendering 시 사용하기 위해 initial rendering 시 전달받은 root container와 root component의 인스턴스를 저장한다.
 let $root = null; // root container
@@ -12,7 +12,7 @@ let rootComponentInstance = null; // root component's instance
  * - 단, eventHolder 배열에 저장되어 있는 event 객체 중에서 selector 프로퍼티 값이 'window'인 경우 이벤트 핸들러는 window에 등록된다.
  * @type {($root: HTMLElement) => void}
  */
-const bindEventHandler = ($root) => {
+const bindEventHandler = $root => {
   for (const { type, selector, handler } of eventHolder) {
     /**
      * addEventListener는 동일한 이벤트 핸들러를 중복 등록하지 않는다.
@@ -20,7 +20,7 @@ const bindEventHandler = ($root) => {
      * @see https://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-EventTarget-addEventListener
      * If multiple identical EventListeners are registered on the same EventTarget with the same parameters the duplicate instances are discarded.
      */
-    (selector === "window" ? window : $root).addEventListener(type, handler);
+    (selector === 'window' ? window : $root).addEventListener(type, handler);
   }
 };
 
@@ -36,7 +36,7 @@ const bindEventHandler = ($root) => {
  * root.render(element);
  */
 
-const render = (RootComponent, $container) => {
+const render = async (RootComponent, $container) => {
   /**
    * render는 initial rendering/re-rendering 시 호출된다.
    * initial rendering 시에는 root component인 RootComponent와 root container인 $container가 전달되지만 re-rendering 시에는 전달되지 않는다.
@@ -47,7 +47,7 @@ const render = (RootComponent, $container) => {
 
   // 컨테이너 노드를 변경하지 않는다. 컨테이너 노드를 변경하면 컨테이너 노드에 위임 등록된 이벤트 핸들러가 모두 제거된다.
   const $virtual = $root.cloneNode();
-  const domString = rootComponentInstance.render();
+  const domString = await rootComponentInstance.render();
   $virtual.innerHTML = domString;
 
   // diffing & Reconciliation

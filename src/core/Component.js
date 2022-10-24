@@ -1,5 +1,5 @@
-import render from "./render.js";
-import eventHolder from "./eventHolder";
+import render from './render.js';
+import eventHolder from './eventHolder.js';
 
 class Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Component {
     this.state = { ...this.state, ...newState };
     // if (this.state !== newState) this.state = newState;
 
-    console.log("[RE-RENDERING] state:", this.state);
+    console.log('[RE-RENDERING] state:', this.state);
     render();
   }
 
@@ -35,7 +35,7 @@ class Component {
        * event.selector === null => 이벤트 핸들러는 root container에 등록된다.
        * 위와 같은 경우 이벤트 핸들러에 if 문을 삽입해 새롭게 생성할 필요가 없다.
        */
-      if (event.selector === "window" || event.selector === null) {
+      if (event.selector === 'window' || event.selector === null) {
         eventHolder.push(event);
         continue;
       }
@@ -47,19 +47,15 @@ class Component {
        * <button onClick={() => { console.log(1) }} onClick={() => { console.log(2) }}>Add</button>
        * => No duplicate props allowed (react/jsx-no-duplicate-props)
        */
-      const duplicated = eventHolder.find(
-        ({ type, selector }) =>
-          type === event.type && selector === event.selector
-      );
+      const duplicated = eventHolder.find(({ type, selector }) => type === event.type && selector === event.selector);
 
       if (!duplicated) {
         const { selector, handler } = event;
 
         // handler를 monkey patch한다.
-        event.handler = (e) => {
+        event.handler = e => {
           // e.target이 selector의 하위 요소일 수도 있다.
-          if (e.target.matches(selector) || e.target.closest(selector))
-            handler(e);
+          if (e.target.matches(selector) || e.target.closest(selector)) handler(e);
         };
 
         eventHolder.push(event);
@@ -68,10 +64,8 @@ class Component {
   }
 
   /** @abstract */
-  render() {
-    throw new Error(
-      `Component의 서브 클래스는 DOMString을 반환하는 'render' 메서드를 구현해야 합니다.`
-    );
+  domStr() {
+    throw new Error(`Component의 서브 클래스는 DOMString을 반환하는 'render' 메서드를 구현해야 합니다.`);
   }
 }
 
