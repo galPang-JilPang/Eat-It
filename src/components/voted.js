@@ -1,6 +1,6 @@
-import createElement from "../utils/createElement.js";
-import { db } from "../utils/firebase.js";
-import Nav from "./nav.js";
+import createElement from '../utils/createElement.js';
+import { db } from '../utils/firebase.js';
+import Nav from './nav.js';
 // prettier-ignore
 const Voted = async params => {
 
