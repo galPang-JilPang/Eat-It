@@ -11,7 +11,7 @@ http://eat-it.kro.kr/
 
 |   백남헌   |   유은지   |   신민경   |
 |:----------:|:----------:|:----------:|
-|[@codevilot](https://github.com/codevilot)|[@codevilot](https://github.com/y00eunji)|[@minkyung00](https://github.com/minkyung00)|
+|[@codevilot](https://github.com/codevilot)|[@y00eunji](https://github.com/y00eunji)|[@minkyung00](https://github.com/minkyung00)|
 |<img src="https://avatars.githubusercontent.com/codevilot" width="100">|<img src="https://avatars.githubusercontent.com/y00eunji" width="100">|<img src="https://avatars.githubusercontent.com/minkyung00" width="100">|
 
 ## 🔧 기술 스택
