@@ -1,6 +1,6 @@
 import { auth, db } from './firebase.js';
 import route from './route.js';
-import render from '../index.js';
+import render from '../../index.js';
 
 // signin, signup에서 공통으로 사용하는 로직
 const signinState = {
