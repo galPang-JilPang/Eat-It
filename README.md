@@ -1,7 +1,7 @@
 # 🍴 뭐먹을끼니
 투표를 통해 음식점을 고르는 프로젝트입니다.
 ### 프로젝트 사이트 
-http://eat-it.kro.kr/
+http://eatit.kro.kr/
 ## figma Link
 https://www.figma.com/file/9Zk6slXhD9HUkYy4pTCicx/%EB%AF%B8%EB%8B%88%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8~?node-id=0%3A1
 
